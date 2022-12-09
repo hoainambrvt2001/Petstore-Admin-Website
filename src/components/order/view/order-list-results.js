@@ -82,6 +82,18 @@ const OrderListResults = ({ orders, ...rest }) => {
     return paymentObj[method];
   };
 
+  const renderOrderStatus = (status) => {
+    const statusTitle = {
+      pending: "Pending",
+      confirm: "Confirmed",
+      cancel: "Canceled",
+      delivering: "Delivering",
+      finish: "Finished",
+      return: "Returned",
+    };
+    return statusTitle[status];
+  };
+
   return (
     <Card {...rest}>
       <Grid container>
@@ -137,7 +149,7 @@ const OrderListResults = ({ orders, ...rest }) => {
                         "error"
                       }
                     >
-                      {order.status}
+                      {renderOrderStatus(order.status)}
                     </SeverityPill>
                   </TableCell>
                   <TableCell>{"$" + order.totalPrice}</TableCell>

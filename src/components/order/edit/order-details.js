@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Router from "next/router";
 
 const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
   const [values, setValues] = useState({
@@ -43,6 +44,55 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
     });
   };
 
+  const renderOrderStatus = () => {
+    const orderStatus = ["pending", "confirm", "cancel", "delivering", "finish", "return"];
+    const statusTitle = {
+      pending: "Pending",
+      confirm: "Confirmed",
+      cancel: "Canceled",
+      delivering: "Delivering",
+      finish: "Finished",
+      return: "Returned",
+    };
+    if (orderDetail.status === "pending") {
+      return orderStatus.slice(0, 3).map((status, idx) => (
+        <MenuItem value={status} key={idx}>
+          {statusTitle[status]}
+        </MenuItem>
+      ));
+    } else if (orderDetail.status === "confirm") {
+      return orderStatus.slice(1, 4).map((status, idx) => (
+        <MenuItem value={status} key={idx}>
+          {statusTitle[status]}
+        </MenuItem>
+      ));
+    } else if (orderDetail.status === "delivering") {
+      return orderStatus.slice(3, 6).map((status, idx) => (
+        <MenuItem value={status} key={idx}>
+          {statusTitle[status]}
+        </MenuItem>
+      ));
+    } else if (orderDetail.status === "finish") {
+      return orderStatus.slice(4, 6).map((status, idx) => (
+        <MenuItem value={status} key={idx}>
+          {statusTitle[status]}
+        </MenuItem>
+      ));
+    } else if (orderDetail.status === "return") {
+      return orderStatus.slice(5, 6).map((status, idx) => (
+        <MenuItem value={status} key={idx}>
+          {statusTitle[status]}
+        </MenuItem>
+      ));
+    } else if (orderDetail.status === "cancel") {
+      return orderStatus.slice(2, 3).map((status, idx) => (
+        <MenuItem value={status} key={idx}>
+          {statusTitle[status]}
+        </MenuItem>
+      ));
+    }
+  };
+
   const handleSaveChanges = async () => {
     const url = `http://localhost:3333/order/${orderDetail._id}`;
     const body = {
@@ -59,6 +109,8 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
       .catch((e) => console.log(e));
 
     setIsEdited(!isEdited);
+
+    Router.push(`/orders/edit/${orderDetail._id}?isEdited=false`);
   };
 
   const handleSwapMode = () => {
@@ -241,11 +293,7 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
                   onChange={handleChange}
                   label="Status"
                 >
-                  <MenuItem value={"pending"}>Pending</MenuItem>
-                  <MenuItem value={"confirm"}>Confirm</MenuItem>
-                  <MenuItem value={"delivering"}>Delivering</MenuItem>
-                  <MenuItem value={"finish"}>Finish</MenuItem>
-                  <MenuItem value={"cancel"}>Cancel</MenuItem>
+                  {renderOrderStatus()}
                 </Select>
               </FormControl>
             </Grid>

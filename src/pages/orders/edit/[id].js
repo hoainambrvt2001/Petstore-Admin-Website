@@ -26,7 +26,7 @@ const Page = ({ isEdit, id }) => {
     };
     fetchData();
     return () => {};
-  }, []);
+  }, [isEdit]);
 
   if (!orderData) {
     return <h1>Loading...</h1>;

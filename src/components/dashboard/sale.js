@@ -5,7 +5,7 @@ export const Sale = ({ totalSale }) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
-        <Grid item>
+        <Grid item xs={12}>
           <Typography color="textSecondary" gutterBottom variant="overline">
             SALES
           </Typography>
@@ -13,7 +13,7 @@ export const Sale = ({ totalSale }) => (
             ${totalSale}
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <Avatar
             sx={{
               backgroundColor: "warning.main",
