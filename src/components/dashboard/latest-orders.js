@@ -21,12 +21,12 @@ import Router from "next/router";
 export const LatestOrders = ({ orders }) => {
   const renderOrderStatus = (status) => {
     const statusTitle = {
-      pending: "Pending",
-      confirm: "Confirmed",
-      cancel: "Canceled",
-      delivering: "Delivering",
-      finish: "Finished",
-      return: "Returned",
+      PENDING: "Pending",
+      CONFIRMED: "Confirmed",
+      CANCELLED: "Canceled",
+      DELIVERING: "Delivering",
+      FINISHED: "Finished",
+      RETURNED: "Returned",
     };
     return statusTitle[status];
   };
@@ -60,10 +60,10 @@ export const LatestOrders = ({ orders }) => {
                   <TableCell>
                     <SeverityPill
                       color={
-                        (order.status === "pending" && "warning") ||
-                        (order.status === "confirm" && "info") ||
-                        (order.status === "delivering" && "secondary") ||
-                        (order.status === "finish" && "success") ||
+                        (order.status === "PENDING" && "warning") ||
+                        (order.status === "CONFIRMED" && "info") ||
+                        (order.status === "DELIVERING" && "secondary") ||
+                        (order.status === "FINISHED" && "success") ||
                         "error"
                       }
                     >

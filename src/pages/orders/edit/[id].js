@@ -6,6 +6,40 @@ import OrderDetails from "../../../components/order/edit/order-details";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { ApolloClient, InMemoryCache, gql, useQuery } from "@apollo/client";
+
+const GET_ORDER = gql`
+query Order($orderId: ID!) {
+  order(id: $orderId) {
+    _id
+    bill {
+      firstName
+      lastName
+      phone
+      email
+      company
+      region
+      district
+      ward
+      address
+      paymentMethod
+    }
+    cart {
+      name
+      price
+      quantity
+      id
+      images {
+        _id
+        image_name
+        url
+      }
+    }
+    totalPrice
+    shippingFee
+    status
+  }
+}`
 
 const Page = ({ isEdit, id }) => {
   // const { order, shipping } = ordersData;
@@ -13,21 +47,24 @@ const Page = ({ isEdit, id }) => {
   const [orderData, setOrderData] = useState("");
   const userSlice = useSelector((state) => state.user);
 
+  const client = new ApolloClient({
+    uri: 'http://localhost:3000/graphql',
+    cache: new InMemoryCache(),
+  });
+  const { loading, error, data } = useQuery(GET_ORDER, {
+    variables: { orderId: id },
+    context: {
+      headers: {
+        Authorization: `Bearer ${userSlice.token}`,
+      },
+    },
+  });
   useEffect(() => {
-    const fetchData = async () => {
-      await axios
-        .get(`http://localhost:3333/order/${id}`, {
-          headers: {
-            Authorization: `Bearer ${userSlice.token}`,
-          },
-        })
-        .then((res) => setOrderData(res.data))
-        .catch((e) => console.log(e));
-    };
-    fetchData();
-    return () => {};
-  }, [isEdit]);
-
+    if (data && data.order) {
+      setOrderData(data.order);
+    }
+  }, [data]);
+  console.log("orderData", orderData);
   if (!orderData) {
     return <h1>Loading...</h1>;
   }
@@ -48,11 +85,11 @@ const Page = ({ isEdit, id }) => {
           <Typography sx={{ mb: 3 }} variant="h4">
             {isEdited ? "Edit order" : "View order"}
           </Typography>
-          <CartListTable cart={orderData.order.cart} />
+          <CartListTable cart={orderData.cart} />
           <OrderDetails
             isEdited={isEdited}
             setIsEdited={setIsEdited}
-            orderDetail={orderData.order}
+            orderDetail={orderData}
           />
         </Container>
       </Box>

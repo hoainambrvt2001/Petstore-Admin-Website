@@ -5,34 +5,56 @@ import { DashboardLayout } from "../../components/dashboard-layout";
 import axios from "axios";
 import ProductListToolbar from "../../components/product/view/product-list-toolbar";
 import ProductListResults from "../../components/product/view/product-list-results";
+import { ApolloClient, InMemoryCache, gql, useQuery } from "@apollo/client";
+import { useSelector } from "react-redux";
 
+const SEARCH_PRODUCTS = gql`
+query Products($filters: ProductFilter, $limit: Int) {
+  products(filters: $filters, limit: $limit) {
+    docs {
+      _id
+      name
+      productCode
+      productSKU
+      price
+      price
+      images {
+        url
+        id
+      }
+      categories {
+        category_name
+        _id
+      }
+    }
+  }
+}`
 const Page = ({ searchText }) => {
   const [productData, setProductData] = useState("");
-  // const { data: products, total, page, last_page, minPrice, maxPrice } = productData;
-
+  const userSlice = useSelector((state) => state.user);
+  const client = new ApolloClient({
+    uri: 'http://localhost:3000/graphql',
+    cache: new InMemoryCache(),
+  });
+  const { loading, error, data } = useQuery(SEARCH_PRODUCTS, {
+    variables: {
+      limit: 100000,
+      filters: {
+        name: searchText
+      }
+    },
+    context: {
+      headers: {
+        Authorization: `Bearer ${userSlice.token}`,
+      },
+    },
+  });
   useEffect(() => {
-    const fetchData = async () => {
-      const url = "http://localhost:3333/product?page=1&limit=99999999";
-      const productData = await axios
-        .get(url)
-        .then((res) => res.data)
-        .catch((e) => console.log(e));
-      setProductData(productData);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const url = `http://localhost:3333/product/search?s=${searchText}`;
-      const productData = await axios
-        .get(url)
-        .then((res) => res.data)
-        .catch((e) => console.log(e));
-      setProductData(productData);
-    };
-    fetchData();
-  }, [searchText]);
+    if (data && data.products) {
+      setProductData(data.products);
+    }
+  }, [data]);
+  console.log("real", productData);
 
   if (!productData) {
     return <h1>Loading ...</h1>;
@@ -53,7 +75,7 @@ const Page = ({ searchText }) => {
         <Container maxWidth={false}>
           <ProductListToolbar />
           <Box sx={{ mt: 3 }}>
-            <ProductListResults products={productData.data} />
+            <ProductListResults products={productData.docs} />
           </Box>
         </Container>
       </Box>

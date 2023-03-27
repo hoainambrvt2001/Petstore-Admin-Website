@@ -7,36 +7,79 @@ import { Sale } from "../components/dashboard/sale";
 import { TotalSoldProduct } from "../components/dashboard/total-sold-product";
 import { TotalPendingOrder } from "../components/dashboard/total-pending-order";
 import { DashboardLayout } from "../components/dashboard-layout";
+import { TodayReservation } from "../components/dashboard/today-reservation";
 import axios from "axios";
 import { useSelector } from "react-redux";
-// import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
-// import { LatestProducts } from "../components/dashboard/latest-products";
-// import { Sales } from "../components/dashboard/sales";
+import { gql, useQuery } from "@apollo/client";
+const GET_DASHBOARD = gql`
+query Dashboard {
+  totalReservationSales {
+    totalSales
+  }
+  totalOrderandSales {
+    totalOrder
+    totalSales
+    totalFinishedOrder
+    totalPendingOrder
+  }
+  latestOrders {
+    _id
+    bill {
+      firstName
+      lastName
+    }
+    createdAt
+    status
+  }
+  todayReservations {
+    _id
+    userName
+    phoneNumber
+    species
+    breed
+    weight
+    reservationHour {
+      timeFrame
+    }
+    serviceType {
+      name
+      price {
+        priceNumber
+        minWeight
+        maxWeight
+      }
+    }
+    location {
+      region
+      district
+      ward
+      address
+      description
+    }
+    status
+    userId {
+      id
+    }
+  }
+}`
 
 const Page = () => {
   const userSlice = useSelector((state) => state.user);
   const [dashboardData, setDashboardData] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const url = "http://localhost:3333/admin/dashboard";
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userSlice.token}`,
-        },
-      };
-      const data = await axios
-        .get(url, config)
-        .then((res) => res.data)
-        .catch((e) => console.log(e));
-
-      setDashboardData(data);
-    };
-    if (userSlice.token) fetchData();
-
-    return () => {};
-  }, [userSlice.token]);
-
+  if (userSlice.token) {
+    const { loading, error, data } = useQuery(GET_DASHBOARD, {
+      uri: 'http://localhost:3000/graphql',
+      headers: {
+        Authorization: `Bearer ${userSlice.token}`,
+      },
+    });
+    useEffect(() => {
+      if (data) {
+        setDashboardData(data);
+      }
+    }, [data]);
+  }
+  console.log("DB data", dashboardData)
   if (!dashboardData) {
     return <h1>Loading ...</h1>;
   }
@@ -55,17 +98,17 @@ const Page = () => {
       >
         <Container maxWidth={false}>
           <Grid container spacing={3}>
-            <Grid item lg={3} sm={6} xl={3} xs={12}>
-              <TotalOrder totalOrder={dashboardData.totalOrder} />
+            <Grid item lg={3} sm={3} xl={6} xs={12}>
+              <TotalOrder totalOrder={dashboardData.totalOrderandSales.totalOrder} />
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TotalPendingOrder totalPendingOrder={dashboardData.totalPendingOrder} />
+              <TotalPendingOrder totalPendingOrder={dashboardData.totalOrderandSales.totalPendingOrder} />
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TotalSoldProduct totalSoldProduct={dashboardData.totalSoldProduct} />
+              <Sale text="Product Sale" totalSale={dashboardData.totalOrderandSales.totalSales} />
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <Sale totalSale={dashboardData.totalSale} />
+              <Sale text="Reservation Sale" totalSale={dashboardData.totalReservationSales.totalSales} />
             </Grid>
             {/* <Grid item lg={8} md={12} xl={9} xs={12}>
             <Sales />
@@ -77,7 +120,10 @@ const Page = () => {
             <LatestProducts sx={{ height: "100%" }} />
           </Grid> */}
             <Grid item xs={12}>
-              <LatestOrders orders={dashboardData.orders} />
+              <LatestOrders orders={dashboardData.latestOrders} />
+            </Grid>
+            <Grid item xs={12}>
+              <TodayReservation reservations={dashboardData.todayReservations} />
             </Grid>
           </Grid>
         </Container>

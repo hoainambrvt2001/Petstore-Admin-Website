@@ -17,8 +17,18 @@ import {
 import axios from "axios";
 import { useSelector } from "react-redux";
 import Router from "next/router";
+import { ApolloClient, InMemoryCache, gql, useMutation } from "@apollo/client";
 
 const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
+  const UPDATE_ORDER = gql`
+  mutation Mutation($updateOrderId: ID!, $input: UpdateOrderInput!) {
+    updateOrder(id: $updateOrderId, input: $input) {
+      data {
+        status
+      }
+    }
+  }
+  `
   const [values, setValues] = useState({
     firstName: orderDetail.bill.firstName,
     lastName: orderDetail.bill.lastName,
@@ -45,74 +55,78 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
   };
 
   const renderOrderStatus = () => {
-    const orderStatus = ["pending", "confirm", "cancel", "delivering", "finish", "return"];
+    const orderStatus = ["PENDING", "CONFIRMED", "CANCELED", "FINISHED", "RETURNED"];
     const statusTitle = {
-      pending: "Pending",
-      confirm: "Confirmed",
-      cancel: "Canceled",
-      delivering: "Delivering",
-      finish: "Finished",
-      return: "Returned",
+      PENDING: "Pending",
+      CONFIRMED: "Confirmed",
+      CANCELED: "Canceled",
+      FINISHED: "Finished",
+      RETURNED: "Returned",
     };
-    if (orderDetail.status === "pending") {
+    if (orderDetail.status === "PENDING") {
       return orderStatus.slice(0, 3).map((status, idx) => (
         <MenuItem value={status} key={idx}>
           {statusTitle[status]}
         </MenuItem>
       ));
-    } else if (orderDetail.status === "confirm") {
+    } else if (orderDetail.status === "CONFIRMED") {
       return orderStatus.slice(1, 4).map((status, idx) => (
         <MenuItem value={status} key={idx}>
           {statusTitle[status]}
         </MenuItem>
       ));
-    } else if (orderDetail.status === "delivering") {
-      return orderStatus.slice(3, 6).map((status, idx) => (
+    } else if (orderDetail.status === "FINISHED") {
+      return orderStatus.slice(3, 5).map((status, idx) => (
         <MenuItem value={status} key={idx}>
           {statusTitle[status]}
         </MenuItem>
       ));
-    } else if (orderDetail.status === "finish") {
-      return orderStatus.slice(4, 6).map((status, idx) => (
+    } else if (orderDetail.status === "RETURNED") {
+      return orderStatus.slice(4, 5).map((status, idx) => (
         <MenuItem value={status} key={idx}>
           {statusTitle[status]}
         </MenuItem>
       ));
-    } else if (orderDetail.status === "return") {
-      return orderStatus.slice(5, 6).map((status, idx) => (
-        <MenuItem value={status} key={idx}>
-          {statusTitle[status]}
-        </MenuItem>
-      ));
-    } else if (orderDetail.status === "cancel") {
-      return orderStatus.slice(2, 3).map((status, idx) => (
+    } else if (orderDetail.status === "CANCELED") {
+      return orderStatus.slice(2, 4).map((status, idx) => (
         <MenuItem value={status} key={idx}>
           {statusTitle[status]}
         </MenuItem>
       ));
     }
   };
+  const navigateToPageAndRefresh = (targetPage) => {
+    // Navigate to the target page
+    Router.push(targetPage);
 
+    // Reload the page after a short delay
+    setTimeout(() => {
+      window.location.reload();
+    }, 10);
+  };
+  const [updateOrder, { loading: mutationLoading, error: mutationError }] = useMutation(UPDATE_ORDER, {
+    client: new ApolloClient({
+      uri: "http://localhost:3000/graphql",
+      cache: new InMemoryCache(),
+    }),
+  });
   const handleSaveChanges = async () => {
-    const url = `http://localhost:3333/order/${orderDetail._id}`;
     const body = {
       status: values.status,
     };
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userSlice.token}`,
-      },
+    console.log("body", body);
+    try {
+      const { data } = await updateOrder({
+        variables: { input: body, updateOrderId: orderDetail.id },
+      });
+
+      console.log('Updated order:', data.updateOrder);
+
+      navigateToPageAndRefresh("/orders");
+    } catch (error) {
+
     };
-    const updateOrder = await axios
-      .patch(url, body, config)
-      .then((res) => res.data)
-      .catch((e) => console.log(e));
-
-    setIsEdited(!isEdited);
-
-    Router.push(`/orders/edit/${orderDetail._id}?isEdited=false`);
-  };
-
+  }
   const handleSwapMode = () => {
     setIsEdited(!isEdited);
   };

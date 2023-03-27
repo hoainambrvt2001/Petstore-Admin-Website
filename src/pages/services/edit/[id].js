@@ -3,66 +3,59 @@ import { useState, useEffect } from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { DashboardLayout } from "../../../components/dashboard-layout";
 import axios from "axios";
-import ProductDetails from "../../../components/product/edit/product-details";
+import ServiceDetails from "../../../components/services/edit/service-details";
 import { useSelector } from "react-redux";
-import { ApolloClient, InMemoryCache, gql, useQuery } from "@apollo/client";
-const PRODUCT_DETAILS = gql`
-query Query($productDetailId: ID!) {
-  productDetail(id: $productDetailId) {
+import { gql, useQuery } from "@apollo/client";
+
+const GET_SERVICE = gql`
+query ServiceType($serviceTypeId: ID!) {
+  serviceType(id: $serviceTypeId) {
     _id
     name
-    productCode
-    productSKU
+    price {
+      name
+      serviceId
+      price
+      priceNumber
+      minWeight
+      updatedAt
+      maxWeight
+    }
+    selectedCount
     description
-    price
-    shortDescription
-    additionalInfo
-    stock
-    categories {
-      _id
-      category_name
-      totalProducts
-    }
-    images {
-      id
-      url
-      image_name
-    }
+    timeServe
+    typeId
   }
 }
 `
-const Page = ({ productId, isEdit }) => {
+
+const Page = ({ serviceId, isEdit }) => {
   const [isEdited, setIsEdited] = useState(isEdit === "true");
-  const [productData, setProductData] = useState("");
+  const [serviceData, setServiceData] = useState("");
   const userSlice = useSelector((state) => state.user);
 
-  const client = new ApolloClient({
+  const { loading, error, data } = useQuery(GET_SERVICE, {
+    variables: { serviceTypeId: serviceId },
     uri: 'http://localhost:3000/graphql',
-    cache: new InMemoryCache(),
-  });
-  const { loading, error, data } = useQuery(PRODUCT_DETAILS, {
-    variables: {
-      productDetailId: productId
-    },
-    context: {
-      headers: {
-        Authorization: `Bearer ${userSlice.token}`,
-      },
+    headers: {
+      Authorization: `Bearer ${userSlice.token}`,
     },
   });
+
   useEffect(() => {
-    if (data && data.productDetail) {
-      setProductData(data.productDetail);
+    if (data && data.serviceType) {
+      setServiceData(data.serviceType);
     }
   }, [data]);
-  if (!productData) {
+  console.log(serviceData);
+  if (!serviceData) {
     return <h1>Loading ...</h1>;
   }
 
   return (
     <>
       <Head>
-        <title>Product Edit</title>
+        <title>Service Edit</title>
       </Head>
       <Box
         component="main"
@@ -73,11 +66,11 @@ const Page = ({ productId, isEdit }) => {
       >
         <Container maxWidth="lg">
           <Typography sx={{ mb: 3 }} variant="h4">
-            {isEdited ? "Edit product" : "View product"}
+            {isEdited ? "Edit service" : "View service"}
           </Typography>
-          <ProductDetails
+          <ServiceDetails
             isEdited={isEdited}
-            productDetail={productData}
+            serviceDetail={serviceData}
             setIsEdited={setIsEdited}
           />
         </Container>
@@ -90,7 +83,7 @@ export async function getServerSideProps(context) {
   const { isEdited, id } = context.query;
   return {
     props: {
-      productId: id,
+      serviceId: id,
       isEdit: isEdited,
     },
   };

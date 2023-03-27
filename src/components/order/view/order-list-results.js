@@ -21,9 +21,11 @@ import Link from "next/link";
 
 const OrderListResults = ({ orders, ...rest }) => {
   const [selectedOrderIds, setSelectedOrderIds] = useState([]);
-  const [limit, setLimit] = useState(9);
+  const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(0);
-
+  const indexOfLastOrder = (page + 1) * limit;
+  const indexOfFirstOrder = indexOfLastOrder - limit;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
   const handleSelectAll = (event) => {
     let newSelectedOrderIds;
 
@@ -84,16 +86,18 @@ const OrderListResults = ({ orders, ...rest }) => {
 
   const renderOrderStatus = (status) => {
     const statusTitle = {
-      pending: "Pending",
-      confirm: "Confirmed",
-      cancel: "Canceled",
-      delivering: "Delivering",
-      finish: "Finished",
-      return: "Returned",
+      PENDING: "Pending",
+      CONFIRMED: "Confirmed",
+      CANCELED: "Canceled",
+      FINISHED: "Finished",
+      RETURNED: "Returned",
     };
     return statusTitle[status];
   };
-
+  console.log("doc", orders);
+  orders.map((order) => (
+    console.log("firstName:", order.bill.firstName)
+  ))
   return (
     <Card {...rest}>
       <Grid container>
@@ -122,7 +126,7 @@ const OrderListResults = ({ orders, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => (
+              {currentOrders.map((order) => (
                 <TableRow
                   hover
                   key={order._id}
@@ -142,10 +146,9 @@ const OrderListResults = ({ orders, ...rest }) => {
                   <TableCell>
                     <SeverityPill
                       color={
-                        (order.status === "pending" && "warning") ||
-                        (order.status === "confirm" && "info") ||
-                        (order.status === "delivering" && "secondary") ||
-                        (order.status === "finish" && "success") ||
+                        (order.status === "PENDING" && "warning") ||
+                        (order.status === "CONFIRMED" && "info") ||
+                        (order.status === "FINISHED" && "success") ||
                         "error"
                       }
                     >
@@ -177,7 +180,7 @@ const OrderListResults = ({ orders, ...rest }) => {
                           />
                         </a>
                       </Link>
-                      {/* 
+                      {/*
                       <MdDeleteOutline
                         fontSize={24}
                         style={{ margin: "0px 5px", cursor: "pointer" }}
@@ -197,7 +200,7 @@ const OrderListResults = ({ orders, ...rest }) => {
         onRowsPerPageChange={handleLimitChange}
         page={page}
         rowsPerPage={limit}
-        rowsPerPageOptions={[5, 7, 9]}
+        rowsPerPageOptions={[5, 10, 20]}
       />
     </Card>
   );

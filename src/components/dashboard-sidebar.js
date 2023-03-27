@@ -33,30 +33,31 @@ const items = [
     icon: <ShoppingBagIcon fontSize="small" />,
     title: "Products",
   },
-  // {
-  //   href: "/products/edit",
-  //   icon: <ShoppingBagIcon fontSize="small" />,
-  //   title: "Products Edit",
-  // },
+
   {
     href: "/orders",
     icon: <IoMdCart fontSize={24} />,
     title: "Orders",
   },
-  // {
-  //   href: "/orders/edit",
-  //   icon: <IoMdCart fontSize={24} />,
-  //   title: "Orders Edit",
-  // },
+  {
+    href: "/reservations",
+    icon: <UsersIcon fontSize="small" />,
+    title: "Reservations",
+  },
+  {
+    href: "/services",
+    icon: <IoMdCart fontSize={24} />,
+    title: "Services",
+  },
   // {
   //   href: "/account",
   //   icon: <UserIcon fontSize="small" />,
   //   title: "Account",
   // },
   // {
-  //   href: "/settings",
+  //   href: "/notifications",
   //   icon: <CogIcon fontSize="small" />,
-  //   title: "Settings",
+  //   title: "Notifications",
   // },
 
   // {

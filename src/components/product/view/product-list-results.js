@@ -22,14 +22,14 @@ const ProductListResults = ({ products, ...rest }) => {
   const [selectedProductIds, setSelectedProductIds] = useState([]);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
-
+  console.log("products", products);
   console.log({ page, limit });
 
   const handleSelectAll = (event) => {
     let newSelectedProductIds;
 
     if (event.target.checked) {
-      newSelectedProductIds = products.map((product) => product._id);
+      newSelectedProductIds = products.map((product) => product.id);
     } else {
       newSelectedProductIds = [];
     }
@@ -103,13 +103,13 @@ const ProductListResults = ({ products, ...rest }) => {
             {products.slice(page * limit, (page + 1) * limit).map((product) => (
               <TableRow
                 hover
-                key={product._id}
-                selected={selectedProductIds.indexOf(product._id) !== -1}
+                key={product.id}
+                selected={selectedProductIds.indexOf(product.id) !== -1}
               >
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedProductIds.indexOf(product._id) !== -1}
-                    onChange={(event) => handleSelectOne(event, product._id)}
+                    checked={selectedProductIds.indexOf(product.id) !== -1}
+                    onChange={(event) => handleSelectOne(event, product.id)}
                     value="true"
                   />
                 </TableCell>
@@ -149,7 +149,7 @@ const ProductListResults = ({ products, ...rest }) => {
                       display: "flex",
                     }}
                   >
-                    <Link href={`/products/edit/${product._id}?isEdited=false`} passHref>
+                    <Link href={`/products/edit/${product.id}?isEdited=false`} passHref>
                       <a>
                         <MdOutlineRemoveRedEye
                           fontSize={24}
@@ -158,7 +158,7 @@ const ProductListResults = ({ products, ...rest }) => {
                       </a>
                     </Link>
 
-                    <Link href={`/products/edit/${product._id}?isEdited=true`} passHref>
+                    <Link href={`/products/edit/${product.id}?isEdited=true`} passHref>
                       <a>
                         <MdOutlineEdit
                           fontSize={24}
@@ -166,7 +166,7 @@ const ProductListResults = ({ products, ...rest }) => {
                         />
                       </a>
                     </Link>
-                    {/* <Link href={`/products/${product._id}?isEdited=false`} passHref>
+                    {/* <Link href={`/products/${product.id}?isEdited=false`} passHref>
                       <a>
                         <MdDeleteOutline
                           fontSize={24}

@@ -16,10 +16,26 @@ import {
 } from "@mui/material";
 import FileUploaderSingle from "./upload-images";
 import DropzoneWrapper from "../styles";
-import axios from "axios";
 import Router from "next/router";
-
+import { ApolloClient, InMemoryCache, gql, useMutation } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
+const CREATE_PRODUCT = gql`
+mutation CreateProduct($product: CreateProductInput!, $files: [Upload!]) {
+  createProduct(product: $product, files: $files) {
+    name
+    productCode
+    productSKU
+    description
+    price
+    shortDescription
+    additionalInfo
+    stock
+    _id
+  }
+}
+`
 const AddProductForm = ({ categories }) => {
+  console.log("cate", categories)
   const [values, setValues] = useState({
     name: "",
     productCode: "",
@@ -29,39 +45,54 @@ const AddProductForm = ({ categories }) => {
     description: "",
     shortDescription: "",
     additionalInfo: "",
-    // images: [],
   });
+  console.log("values", values);
   const [images, setImages] = useState([]);
-
+  console.log("img", images);
   const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
   };
-
+  const handleFileChange = (event) => {
+    console.log("eve", event);
+    setImages(event.target.files);
+  }
+  const link = createUploadLink({ uri: "http://localhost:3000/graphql" })
+  const [createProduct, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_PRODUCT, {
+    client: new ApolloClient({
+      link,
+      cache: new InMemoryCache(),
+    })
+  })
   const handleAddProduct = async () => {
-    // console.log({ ...values, images: images[0] });
-    const url = "http://localhost:3333/product/create";
-    const formBody = new FormData();
-    formBody.append("name", values.name);
-    formBody.append("productCode", values.productCode);
-    formBody.append("categories", values.categories);
-    formBody.append("price", values.price);
-    formBody.append("productSKU", values.productSKU);
-    formBody.append("description", values.description);
-    formBody.append("shortDescription", values.shortDescription);
-    formBody.append("images", images);
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    const response = await axios
-      .post(url, formBody, config)
-      .then((res) => res.data)
-      .catch((e) => console.log(e));
-    Router.replace(`/products/edit/${response._id}?isEdited=false`);
+    const cates = [Buffer.from(values.categories)];
+    const cateIds = cates.map(cate => cate.toString());
+    const body = {
+      name: values.name,
+      productCode: values.productCode,
+      productSKU: values.productSKU,
+      categories: cateIds,
+      price: Number(values.price),
+      description: values.description,
+      shortDescription: values.shortDescription,
+      additionalInfos: values.additionalInfo,
+    }
+    console.log("body", body);
+    try {
+      const { data } = await createProduct({
+        variables: {
+          product: body,
+          files: images,
+        },
+      })
+      console.log("res", data.createProduct);
+      Router.replace(`/products/`);
+    } catch (error) {
+      console.error('Error create product:', error.message);
+    }
+
   };
 
   return (
@@ -181,6 +212,7 @@ const AddProductForm = ({ categories }) => {
               </Typography>
               <DropzoneWrapper>
                 <FileUploaderSingle setImages={setImages} />
+                {/* <input type="file" onChange={handleFileChange} /> */}
               </DropzoneWrapper>
             </Grid>
           </Grid>

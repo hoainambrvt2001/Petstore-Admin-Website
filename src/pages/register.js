@@ -17,11 +17,32 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
-
+import { ApolloClient, InMemoryCache, gql, useMutation } from "@apollo/client";
+const SIGNUP_MUTATION = gql`
+mutation Mutation($input: AuthInput!) {
+  signUp(input: $input) {
+    accessToken
+    expiredIn
+    user {
+      id
+      firstName
+      lastName
+      email
+      role
+    }
+    statusCode
+  }
+}
+`
 const Register = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-
+  const [signUpMutation, { loading: mutationLoading, error: mutationError }] = useMutation(SIGNUP_MUTATION, {
+    client: new ApolloClient({
+      uri: 'http://localhost:3000/graphql',
+      cache: new InMemoryCache(),
+    })
+  })
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -39,15 +60,18 @@ const Register = () => {
     }),
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        const registerData = await axios
-          .post("http://localhost:3333/auth/signup", {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            password: values.password,
-          })
-          .then((res) => res.data);
-
+        const inputs = {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+        }
+        console.log(inputs);
+        const { data } = await signUpMutation({
+          variables: { input: inputs },
+        })
+        console.log("signUp", data.signUp)
+        const registerData = data.signUp;
         if (registerData) {
           const userInfo = {
             id: registerData.user.id,

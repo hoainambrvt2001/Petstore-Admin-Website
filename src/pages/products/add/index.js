@@ -3,8 +3,19 @@ import { Box, Container, Typography } from "@mui/material";
 import { DashboardLayout } from "../../../components/dashboard-layout";
 import AddProductForm from "../../../components/product/add/add-product-form";
 import axios from "axios";
+import { ApolloClient, InMemoryCache, gql, useQuery } from "@apollo/client";
 
-const Page = ({ categories }) => {
+const GET_CATEGORIES = gql`
+  query Categories {
+    categories {
+      _id
+      category_name
+      totalProducts
+    }
+  }
+`;
+
+export default function Page({ categories }) {
   return (
     <>
       <Head>
@@ -26,13 +37,19 @@ const Page = ({ categories }) => {
       </Box>
     </>
   );
-};
+}
 
 export async function getServerSideProps(context) {
-  const categories = await axios
-    .get("http://localhost:3333/categories")
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
+  const client = new ApolloClient({
+    uri: 'http://localhost:3000/graphql',
+    cache: new InMemoryCache(),
+  });
+
+  const { data } = await client.query({
+    query: GET_CATEGORIES,
+  });
+
+  const categories = data.categories;
 
   return {
     props: {
@@ -43,4 +60,3 @@ export async function getServerSideProps(context) {
 
 Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default Page;

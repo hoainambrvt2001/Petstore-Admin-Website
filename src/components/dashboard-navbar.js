@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip } from '@mui/material';
@@ -8,7 +8,14 @@ import { Bell as BellIcon } from '../icons/bell';
 import { UserCircle as UserCircleIcon } from '../icons/user-circle';
 import { Users as UsersIcon } from '../icons/users';
 import { AccountPopover } from './account-popover';
-
+import Link from 'next/link';
+import { useQuery, gql } from '@apollo/client';
+import { useSelector } from 'react-redux';
+const GET_ISREAD = gql`
+query Query {
+  countIsRead
+}
+`
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   boxShadow: theme.shadows[3]
@@ -18,7 +25,20 @@ export const DashboardNavbar = (props) => {
   const { onSidebarOpen, ...other } = props;
   const settingsRef = useRef(null);
   const [openAccountPopover, setOpenAccountPopover] = useState(false);
-
+  const userSlice = useSelector((state) => state.user);
+  const [notificationData, setNotificationData] = useState(0);
+  const { loading, error, data } = useQuery(GET_ISREAD, {
+    uri: "http://localhost:3000/graphql",
+    headers: {
+      Authorization: `Bearer ${userSlice.token}`,
+    },
+  });
+  useEffect(() => {
+    if (data && data.countIsRead) {
+      setNotificationData(data.countIsRead);
+    }
+  }, [data]);
+  console.log("notificationData", notificationData);
   return (
     <>
       <DashboardNavbarRoot
@@ -62,15 +82,13 @@ export const DashboardNavbar = (props) => {
             </IconButton>
           </Tooltip>
           <Tooltip title="Notifications">
-            <IconButton sx={{ ml: 1 }}>
-              <Badge
-                badgeContent={4}
-                color="primary"
-                variant="dot"
-              >
-                <BellIcon fontSize="small" />
-              </Badge>
-            </IconButton>
+            <Link href="/notifications">
+              <IconButton sx={{ ml: 1 }}>
+                <Badge badgeContent={notificationData} color="primary" >
+                  <BellIcon fontSize="small" />
+                </Badge>
+              </IconButton>
+            </Link>
           </Tooltip>
           <Avatar
             onClick={() => setOpenAccountPopover(true)}

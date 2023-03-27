@@ -1,5 +1,3 @@
-// import { Fragment } from "react";
-// import { AuthConsumer, AuthProvider } from "../contexts/auth-context";
 import Head from "next/head";
 import { Provider } from "react-redux";
 import store from "../store";
@@ -12,10 +10,15 @@ import { createEmotionCache } from "../utils/create-emotion-cache";
 import { registerChartJs } from "../utils/register-chart-js";
 import { theme } from "../theme";
 import { UserProvider } from "../contexts/user-context";
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 registerChartJs();
 
 const clientSideEmotionCache = createEmotionCache();
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/graphql',
+  cache: new InMemoryCache()
+});
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -32,14 +35,11 @@ const App = (props) => {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            {/* <AuthProvider>
-              <AuthConsumer>
-                {(auth) =>
-                  auth.isLoading ? <Fragment /> : getLayout(<Component {...pageProps} />)
-                }
-              </AuthConsumer>
-            </AuthProvider> */}
-            <UserProvider>{getLayout(<Component {...pageProps} />)}</UserProvider>
+            <UserProvider>
+              <ApolloProvider client={client}>
+                {getLayout(<Component {...pageProps} />)}
+              </ApolloProvider>
+            </UserProvider>
           </ThemeProvider>
         </LocalizationProvider>
       </Provider>
