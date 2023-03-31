@@ -55,11 +55,11 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
   };
 
   const renderOrderStatus = () => {
-    const orderStatus = ["PENDING", "CONFIRMED", "CANCELED", "FINISHED", "RETURNED"];
+    const orderStatus = ["PENDING", "CONFIRMED", "CANCELLED", "FINISHED", "RETURNED"];
     const statusTitle = {
       PENDING: "Pending",
       CONFIRMED: "Confirmed",
-      CANCELED: "Canceled",
+      CANCELLED: "Cancelled",
       FINISHED: "Finished",
       RETURNED: "Returned",
     };
@@ -87,7 +87,7 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
           {statusTitle[status]}
         </MenuItem>
       ));
-    } else if (orderDetail.status === "CANCELED") {
+    } else if (orderDetail.status === "CANCELLED") {
       return orderStatus.slice(2, 4).map((status, idx) => (
         <MenuItem value={status} key={idx}>
           {statusTitle[status]}

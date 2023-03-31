@@ -88,7 +88,7 @@ const OrderListResults = ({ orders, ...rest }) => {
     const statusTitle = {
       PENDING: "Pending",
       CONFIRMED: "Confirmed",
-      CANCELED: "Canceled",
+      CANCELLED: "Cancelled",
       FINISHED: "Finished",
       RETURNED: "Returned",
     };

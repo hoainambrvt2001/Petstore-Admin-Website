@@ -23,7 +23,7 @@ export const LatestOrders = ({ orders }) => {
     const statusTitle = {
       PENDING: "Pending",
       CONFIRMED: "Confirmed",
-      CANCELLED: "Canceled",
+      CANCELLED: "Cancelled",
       DELIVERING: "Delivering",
       FINISHED: "Finished",
       RETURNED: "Returned",

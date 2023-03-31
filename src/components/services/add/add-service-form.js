@@ -133,7 +133,8 @@ const AddServiceForm = ({ categories }) => {
 
       });
       console.log("res", data.createServiceType);
-      navigateToPageAndRefresh("/services");
+      alert("Services created successfully");
+      window.location.href = "/services";
     }
     catch (error) {
       console.error('Error create service:', error.message);

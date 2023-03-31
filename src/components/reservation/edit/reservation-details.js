@@ -87,10 +87,10 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
 
   };
   const renderReservationStatus = () => {
-    const reservationStatus = ["BOOKED", "CANCELED", "SUCCESS"];
+    const reservationStatus = ["BOOKED", "CANCELLED", "SUCCESS"];
     const statusTitle = {
       BOOKED: "Booked",
-      CANCELED: "Canceled",
+      CANCELLED: "Cancelled",
       SUCCESS: "Success",
     };
     return reservationStatus.map((status, idx) => (

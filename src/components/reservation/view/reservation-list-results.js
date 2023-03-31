@@ -78,7 +78,7 @@ const ReservationListResults = ({ reservations, ...rest }) => {
   const renderReservationStatus = (status) => {
     const statusTitle = {
       BOOKED: "Booked",
-      CANCELED: "Canceled",
+      CANCELLED: "Cancelled",
       SUCCESS: "Success",
     };
     return statusTitle[status.toUpperCase()];
@@ -148,7 +148,7 @@ const ReservationListResults = ({ reservations, ...rest }) => {
                   <TableCell>
                     <SeverityPill
                       color={
-                        (reservation.status === "CANCELED" && "warning") ||
+                        (reservation.status === "CANCELLED" && "warning") ||
                         (reservation.status === "BOOKED" && "info") ||
                         (reservation.status === "SUCCESS" && "success") ||
                         "error"

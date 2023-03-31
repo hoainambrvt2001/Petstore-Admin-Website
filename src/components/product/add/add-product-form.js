@@ -88,7 +88,8 @@ const AddProductForm = ({ categories }) => {
         },
       })
       console.log("res", data.createProduct);
-      Router.replace(`/products/`);
+      alert("Product created successfully");
+      window.location.href = "/products";
     } catch (error) {
       console.error('Error create product:', error.message);
     }
