@@ -27,6 +27,7 @@ const CHANGE_ISREAD = gql
 }`
 
 const NotificationListResults = ({ notifications, ...rest }) => {
+  console.log(notifications)
   const [selectedNotificationIds, setSelectedNotificationIds] = useState([]);
   const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(0);
@@ -102,7 +103,7 @@ const NotificationListResults = ({ notifications, ...rest }) => {
                   <TableCell>
                     <Typography fontWeight={notification.isRead === true ? "normal" : "bold"}>
                       {`${notification.title}
-                    ${notification.orderId}
+                    ${notification.orderId ? notification.orderId : notification.reservationId}
                   `}</Typography></TableCell>
 
                   <TableCell>
@@ -114,7 +115,7 @@ const NotificationListResults = ({ notifications, ...rest }) => {
                     >
                       <Link href={notification.type === "ORDER"
                         ? `/orders/edit/${notification.orderId}?isEdited=false`
-                        : `/reservations/edit/${notification.orderId}?isEdited=false`
+                        : `/reservations/edit/${notification.reservationId}?isEdited=false`
 
                       } passHref>
                         <a>

@@ -16,7 +16,7 @@ query Query($productDetailId: ID!) {
     description
     price
     shortDescription
-    additionalInfo
+    additionalInfos
     stock
     categories {
       _id

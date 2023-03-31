@@ -117,7 +117,7 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
     console.log("body", body);
     try {
       const { data } = await updateOrder({
-        variables: { input: body, updateOrderId: orderDetail.id },
+        variables: { input: body, updateOrderId: orderDetail._id },
       });
 
       console.log('Updated order:', data.updateOrder);

@@ -3,8 +3,14 @@ import PropTypes from "prop-types";
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   Table,
   TableBody,
@@ -17,11 +23,21 @@ import {
 import { getInitials } from "../../../utils/get-initials";
 import { MdOutlineEdit, MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import Link from "next/link";
-
+import { ApolloClient, InMemoryCache, gql, useMutation } from "@apollo/client";
+const DELETE_PRODUCT = gql`
+mutation DeleteProduct($deleteProductId: ID!) {
+  deleteProduct(id: $deleteProductId) {
+    success
+    msg
+  }
+}
+`
 const ProductListResults = ({ products, ...rest }) => {
   const [selectedProductIds, setSelectedProductIds] = useState([]);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [deleteId, setDeleteId] = useState("")
   console.log("products", products);
   console.log({ page, limit });
 
@@ -74,6 +90,36 @@ const ProductListResults = ({ products, ...rest }) => {
     return renderStr.slice(0, -2);
   };
 
+  const handleDelete = (id) => {
+    console.log(id)
+    setDeleteId(id);
+    setShowConfirmation(true);
+  }
+  const [deleteProductMutation, { loading: mutationLoading, error: mutationError }] = useMutation(DELETE_PRODUCT, {
+    client: new ApolloClient({
+      uri: 'http://localhost:3000/graphql',
+      cache: new InMemoryCache(),
+    })
+  })
+  const handleConfirmationClose = async (confirmed) => {
+    console.log("deleteId", deleteId);
+    setShowConfirmation(false);
+    if (confirmed) {
+      try {
+        const { data } = await deleteProductMutation({
+          variables: { deleteProductId: deleteId },
+        })
+        alert("The product is Deleted");
+        console.log(data);
+        window.location.href = "/products";
+      }
+      catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
+
+  }
   return (
     <Card {...rest}>
       <Grid container>
@@ -149,7 +195,7 @@ const ProductListResults = ({ products, ...rest }) => {
                       display: "flex",
                     }}
                   >
-                    <Link href={`/products/edit/${product.id}?isEdited=false`} passHref>
+                    <Link href={`/products/edit/${product._id}?isEdited=false`} passHref>
                       <a>
                         <MdOutlineRemoveRedEye
                           fontSize={24}
@@ -158,7 +204,7 @@ const ProductListResults = ({ products, ...rest }) => {
                       </a>
                     </Link>
 
-                    <Link href={`/products/edit/${product.id}?isEdited=true`} passHref>
+                    <Link href={`/products/edit/${product._id}?isEdited=true`} passHref>
                       <a>
                         <MdOutlineEdit
                           fontSize={24}
@@ -166,14 +212,13 @@ const ProductListResults = ({ products, ...rest }) => {
                         />
                       </a>
                     </Link>
-                    {/* <Link href={`/products/${product.id}?isEdited=false`} passHref>
-                      <a>
-                        <MdDeleteOutline
-                          fontSize={24}
-                          style={{ margin: "0px 5px", cursor: "pointer" }}
-                        />
-                      </a>
-                    </Link> */}
+                    <a>
+                      <MdDeleteOutline
+                        fontSize={24}
+                        style={{ margin: "0px 5px", cursor: "pointer" }}
+                        onClick={() => handleDelete(product._id)}
+                      />
+                    </a>
                   </Box>
                 </TableCell>
               </TableRow>
@@ -188,8 +233,21 @@ const ProductListResults = ({ products, ...rest }) => {
         onRowsPerPageChange={handleLimitChange}
         page={page}
         rowsPerPage={limit}
-        rowsPerPageOptions={[5, 7, 9]}
+        rowsPerPageOptions={[5, 10, 20]}
       />
+      <Box>
+        <Dialog open={showConfirmation} onClose={() => handleConfirmationClose(false)}>
+          <DialogTitle><Typography fontWeight={"bold"} fontSize={25}>Confirm Submission</Typography></DialogTitle>
+          <DialogContent>
+            <DialogContentText> Are you sure to delete this product? </DialogContentText>
+
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleConfirmationClose(false)}>Go Back</Button>
+            <Button onClick={() => handleConfirmationClose(true)}>Confirm</Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
     </Card>
   );
 };

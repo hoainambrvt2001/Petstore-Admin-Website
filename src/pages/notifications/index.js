@@ -14,6 +14,7 @@ query Notifications {
     _id
     title
     orderId
+    reservationId
     type
     reservation {
       _id

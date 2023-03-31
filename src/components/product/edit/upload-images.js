@@ -31,7 +31,7 @@ const HeadingTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const FileUploaderSingle = ({ isEdited, image, isHaveImage }) => {
+const FileUploaderSingle = ({ isEdited, image, isHaveImage, setImages }) => {
   // ** State
   const [files, setFiles] = useState(isHaveImage ? [image] : []);
 
@@ -44,6 +44,7 @@ const FileUploaderSingle = ({ isEdited, image, isHaveImage }) => {
     },
     onDrop: (acceptedFiles) => {
       setFiles(acceptedFiles.map((file) => Object.assign(file)));
+      setImages(acceptedFiles);
     },
   });
 

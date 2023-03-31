@@ -376,7 +376,7 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
             }}
           >
             <Button color="primary" variant="contained" onClick={handleSwapMode}>
-              Edit product
+              Edit reservation
             </Button>
           </Box>
         )}

@@ -12,7 +12,31 @@ import {
 } from "@mui/material";
 import FileUploaderSingle from "./upload-images";
 import DropzoneWrapper from "../styles/index";
+import { ApolloClient, InMemoryCache, gql, useMutation } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
 
+const UPDATE_PRODUCT = gql`
+mutation UpdateProduct($updateProductId: ID!, $input: UpdateProductInput, $files: [Upload]) {
+  updateProduct(id: $updateProductId, input: $input, files: $files) {
+    _id
+    name
+    productSKU
+    productCode
+    description
+    price
+    shortDescription
+    stock
+    images {
+      id
+      url
+      image_name
+    }
+    categories {
+      _id
+      category_name
+    }
+  }
+}`
 const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
   const [values, setValues] = useState({
     name: productDetail.name,
@@ -22,19 +46,62 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
     productSKU: productDetail.productSKU,
     description: productDetail.description,
     shortDescription: productDetail.shortDescription,
-    additionalInfo: productDetail.additionalInfo,
+    additionalInfos: productDetail.additionalInfos,
     images: productDetail.images,
   });
-
+  console.log("values", values);
+  const [images, setImages] = useState([]);
+  console.log("img", images);
+  const link = createUploadLink({ uri: "http://localhost:3000/graphql" })
+  const [updateProduct, { loading: mutationLoading, error: mutationError }] = useMutation(UPDATE_PRODUCT, {
+    client: new ApolloClient({
+      link,
+      cache: new InMemoryCache(),
+    })
+  })
   const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
   };
+  const navigateToPageAndRefresh = (targetPage) => {
+    // Navigate to the target page
+    Router.push(targetPage);
 
-  const handleSaveChanges = () => {
-    console.log(values);
+    // Reload the page after a short delay
+    setTimeout(() => {
+      window.location.reload();
+    }, 10);
+  };
+  const handleSaveChanges = async () => {
+    const cates = [Buffer.from(values.categories)];
+    const cateIds = cates.map(cate => cate.toString());
+    const body = {
+      name: values.name,
+      productCode: values.code,
+      productSKU: values.productSKU,
+      categories: values.categories._id,
+      price: Number(values.price),
+      description: values.description,
+      shortDescription: values.shortDescription,
+      additionalInfos: values.additionalInfos,
+    }
+    console.log("id", productDetail._id)
+    console.log("input", body)
+    try {
+      const { data } = await updateProduct({
+        variables: {
+          updateProductId: productDetail._id,
+          input: body,
+          files: images,
+        },
+      })
+      console.log("res", data.updateProduct);
+      window.location.href = "/products";
+    } catch (error) {
+      console.error('Error create product:', error.message);
+    }
   };
 
   const handleSwapMode = () => {
@@ -127,7 +194,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
               </Typography>
               <Typography
                 variant="body2"
-                dangerouslySetInnerHTML={{ __html: values.additionalInfo }}
+                dangerouslySetInnerHTML={{ __html: values.additionalInfos }}
                 sx={{
                   border: "1px solid #E6E8F0",
                   borderRadius: "8px",
@@ -151,6 +218,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
                   }}
                   isEdited={isEdited}
                   isHaveImage={values.images.length !== 0}
+                  setImages={setImages}
                 />
               </DropzoneWrapper>
             </Grid>

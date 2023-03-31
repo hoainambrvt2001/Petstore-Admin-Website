@@ -28,7 +28,7 @@ mutation CreateProduct($product: CreateProductInput!, $files: [Upload!]) {
     description
     price
     shortDescription
-    additionalInfo
+    additionalInfos
     stock
     _id
   }
@@ -44,7 +44,7 @@ const AddProductForm = ({ categories }) => {
     productSKU: "",
     description: "",
     shortDescription: "",
-    additionalInfo: "",
+    additionalInfos: "",
   });
   console.log("values", values);
   const [images, setImages] = useState([]);
@@ -77,7 +77,7 @@ const AddProductForm = ({ categories }) => {
       price: Number(values.price),
       description: values.description,
       shortDescription: values.shortDescription,
-      additionalInfos: values.additionalInfo,
+      additionalInfos: values.additionalInfos,
     }
     console.log("body", body);
     try {
@@ -200,9 +200,9 @@ const AddProductForm = ({ categories }) => {
                 fullWidth
                 label="Additional Information"
                 placeholder="Enter additional information"
-                name="additionalInfo"
+                name="additionalInfos"
                 onChange={handleChange}
-                value={values.additionalInfo}
+                value={values.additionalInfos}
                 variant="outlined"
               />
             </Grid>
