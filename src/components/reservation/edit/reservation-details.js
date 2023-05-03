@@ -39,6 +39,7 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
     if (price) return price.priceNumber;
     else return 0;
   }
+  
   const [values, setValues] = useState({
     userId: reservationDetail.userId.id,
     userName: reservationDetail.userName,
@@ -319,6 +320,32 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
                 name="address"
                 onChange={handleChange}
                 value={values.address}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                InputProps={{
+                  readOnly: true,
+                }}
+                fullWidth
+                label="Date"
+                name="reservationDate"
+                onChange={handleChange}
+                value={values.reservationDate.slice(0, 10)}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                InputProps={{
+                  readOnly: true,
+                }}
+                fullWidth
+                label="Time"
+                name="reservationHour"
+                onChange={handleChange}
+                value={values.reservationHour.name}
                 variant="outlined"
               />
             </Grid>

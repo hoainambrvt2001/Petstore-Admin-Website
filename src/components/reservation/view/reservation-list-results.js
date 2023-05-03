@@ -110,7 +110,7 @@ const ReservationListResults = ({ reservations, ...rest }) => {
                   />
                 </TableCell>
                 <TableCell>Id</TableCell>
-                <TableCell>User Id</TableCell>
+                {/* <TableCell>User Id</TableCell> */}
                 <TableCell>Name</TableCell>
                 <TableCell>Date - Time</TableCell>
                 <TableCell>Phone Number</TableCell>
@@ -137,7 +137,7 @@ const ReservationListResults = ({ reservations, ...rest }) => {
                     />
                   </TableCell>
                   <TableCell>{reservation._id}</TableCell>
-                  <TableCell>{reservation.userId.id}</TableCell>
+                  {/* <TableCell>{reservation.userId.id}</TableCell> */}
                   <TableCell>{reservation.userName}</TableCell>
                   <TableCell>{`${reservation.reservationDate.slice(0, 10)} - ${reservation.reservationHour.name}`}</TableCell>
                   <TableCell>{`${reservation.phoneNumber}`}</TableCell>

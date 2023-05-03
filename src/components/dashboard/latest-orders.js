@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   CardHeader,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +18,7 @@ import {
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { SeverityPill } from "../severity-pill";
 import Router from "next/router";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 export const LatestOrders = ({ orders }) => {
   const renderOrderStatus = (status) => {
@@ -33,7 +35,7 @@ export const LatestOrders = ({ orders }) => {
 
   return (
     <Card>
-      <CardHeader title="Latest Orders" />
+      <CardHeader title="Pending Orders" />
       <PerfectScrollbar>
         <Box sx={{ minWidth: 800 }}>
           <Table>
@@ -49,6 +51,7 @@ export const LatestOrders = ({ orders }) => {
                   </Tooltip>
                 </TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -69,6 +72,23 @@ export const LatestOrders = ({ orders }) => {
                     >
                       {renderOrderStatus(order.status)}
                     </SeverityPill>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        alignItems: "center",
+                        display: "flex",
+                      }}
+                    >
+                      <Link href={`/orders/edit/${order._id}?isEdited=false`} passHref>
+                        <a>
+                          <MdOutlineRemoveRedEye
+                            fontSize={24}
+                            style={{ margin: "0px 5px", cursor: "pointer" }}
+                          />
+                        </a>
+                      </Link>
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))}

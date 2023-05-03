@@ -16,12 +16,12 @@ import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 import { IoMdCart } from "react-icons/io";
-
+import { MdHome } from "react-icons/md";
 const items = [
   {
     href: "/",
-    icon: <ChartBarIcon fontSize="small" />,
-    title: "Dashboard",
+    icon: <MdHome fontSize="small" />,
+    title: "Home",
   },
   // {
   //   href: "/customers",

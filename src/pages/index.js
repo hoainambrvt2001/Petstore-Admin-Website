@@ -108,7 +108,7 @@ const Page = () => {
               <Sale text="Product Sale" totalSale={dashboardData.totalOrderandSales.totalSales} />
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <Sale text="Reservation Sale" totalSale={dashboardData.totalReservationSales.totalSales} />
+              <Sale text="Service Sale" totalSale={dashboardData.totalReservationSales.totalSales} />
             </Grid>
             {/* <Grid item lg={8} md={12} xl={9} xs={12}>
             <Sales />
@@ -120,11 +120,12 @@ const Page = () => {
             <LatestProducts sx={{ height: "100%" }} />
           </Grid> */}
             <Grid item xs={12}>
-              <LatestOrders orders={dashboardData.latestOrders} />
-            </Grid>
-            <Grid item xs={12}>
               <TodayReservation reservations={dashboardData.todayReservations} />
             </Grid>
+            <Grid item xs={12}>
+              <LatestOrders orders={dashboardData.latestOrders} />
+            </Grid>
+
           </Grid>
         </Container>
       </Box>

@@ -52,6 +52,9 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
       [event.target.name]: event.target.value,
     });
   };
+  const handleSwapMode = () => {
+    setIsEdited(!isEdited);
+  };
   const handleAddPrice = async () => {
     setValues({
       ...values,
@@ -141,7 +144,7 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
 
       });
       console.log("res", data.updateServiceType);
-      navigateToPageAndRefresh("/services");
+      window.location.href = "/services";
     }
     catch (error) {
       console.error('Error update service:', error.message);
@@ -157,6 +160,9 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
           <Grid container spacing={3}>
             <Grid item md={12} xs={12}>
               <TextField
+                InputProps={{
+                  readOnly: (!isEdited),
+                }}
                 fullWidth
                 label="Name"
                 placeholder="Enter name"
@@ -168,6 +174,9 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
             </Grid>
             <Grid item md={12} xs={12}>
               <TextField
+                InputProps={{
+                  readOnly: (!isEdited),
+                }}
                 multiline
                 minRows={10}
                 fullWidth
@@ -195,6 +204,9 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
 
                       <Grid item md={4} xs={12}>
                         <TextField
+                          InputProps={{
+                            readOnly: (!isEdited),
+                          }}
                           fullWidth
                           type="number"
                           label="Min Weight"
@@ -207,6 +219,9 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
                       </Grid>
                       <Grid item md={4} xs={12}>
                         <TextField
+                          InputProps={{
+                            readOnly: (!isEdited),
+                          }}
                           fullWidth
                           type="number"
                           label="Max Weight"
@@ -219,6 +234,9 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
                       </Grid>
                       <Grid item md={4} xs={12}>
                         <TextField
+                          InputProps={{
+                            readOnly: (!isEdited),
+                          }}
                           fullWidth
                           type="number"
                           label="Price"
@@ -234,19 +252,20 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
                 </Card>
               </div>
             ))}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                p: 2,
-              }}
-            >
-              <Button color="primary" variant="contained" onClick={handleAddPrice}>
-                Add Price
-              </Button>
-            </Box>
-            {
-              values.price.length > 1 &&
+            {isEdited &&
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  p: 2,
+                }}
+              >
+                <Button color="primary" variant="contained" onClick={handleAddPrice}>
+                  Add Price
+                </Button>
+              </Box>
+            }
+            {values.price.length > 1 && isEdited &&
               <Box
                 sx={{
                   display: "flex",
@@ -257,7 +276,8 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
                 <Button color="error" variant="contained" onClick={handleRemovePrice}>
                   Remove Price
                 </Button>
-              </Box>}
+              </Box>
+            }
           </Grid>
 
           <Grid container spacing={3}>
@@ -281,17 +301,31 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
           </Grid>
         </CardContent>
         <Divider />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            p: 2,
-          }}
-        >
-          <Button color="primary" variant="contained" onClick={handleAddService}>
-            Add Service
-          </Button>
-        </Box>
+        {isEdited ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              p: 2,
+            }}
+          >
+            <Button color="primary" variant="contained" onClick={handleAddService}>
+              Save changes
+            </Button>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              p: 2,
+            }}
+          >
+            <Button color="primary" variant="contained" onClick={handleSwapMode}>
+              Edit service
+            </Button>
+          </Box>
+        )}
       </Card>
     </form >
   );

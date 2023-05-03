@@ -127,12 +127,15 @@ const ServiceListResults = ({ services, ...rest }) => {
         {`${price.minWeight} Kg to ${price.maxWeight} Kg: $${price.priceNumber}`}
       </Typography>
     }
-
-
-
   }
-
-
+  const renderServicePrice = (service) => {
+    if (service.price.length === 1) {
+      return `$${service.price[0].priceNumber}`;
+    }
+    return service.price.map((price, index) => {
+      return <div key={index}>{renderPrice(price)}</div>
+    });
+  }
   return (
     <Card {...rest}>
       <Grid container>
@@ -151,8 +154,12 @@ const ServiceListResults = ({ services, ...rest }) => {
               {currentServices.map((service) => (
                 <TableRow>
                   <TableCell>{service.name}</TableCell>
-                  <TableCell> {service.description}</TableCell>
-                  <TableCell>{service.price.map((i) => (renderPrice(i)))}</TableCell>
+                  <TableCell>{service.description.length > 50
+                    ? service.description.slice(0, service.description.lastIndexOf(" ", 50)) + " ..."
+                    : service.description}
+                  </TableCell>
+
+                  <TableCell>{renderServicePrice(service)}</TableCell>
                   <TableCell>{service.timeServe}</TableCell>
                   <TableCell>
                     <Box

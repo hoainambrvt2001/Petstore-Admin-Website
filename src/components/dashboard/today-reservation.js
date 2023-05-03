@@ -66,61 +66,69 @@ export const TodayReservation = ({ reservations }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {reservations.map((reservation) => (
-                <TableRow hover key={reservation.id}>
-                  <TableCell>{reservation._id}</TableCell>
-                  <TableCell>{reservation.userId.id}</TableCell>
-                  <TableCell>{reservation.userName}</TableCell>
-                  <TableCell>{`${reservation.reservationHour.timeFrame.slice(0, -3)}`}</TableCell>
-                  <TableCell>{`${reservation.phoneNumber}`}</TableCell>
-                  <TableCell>{`${capitalizedStr(reservation.species)} - ${capitalizedStr(reservation.breed)}`}</TableCell>
-                  <TableCell>{`${reservation.weight}`}</TableCell>
-                  <TableCell>{`${reservation.serviceType.name}`}</TableCell>
-                  <TableCell>{`$${getPrice(reservation)}`}</TableCell>
-                  <TableCell>
-                    <SeverityPill
-                      color={
-                        (reservation.status === "CANCELLED" && "warning") ||
-                        (reservation.status === "BOOKED" && "info") ||
-                        (reservation.status === "SUCCESS" && "success") ||
-                        "error"
-                      }
-                    >
-                      {renderReservationStatus(reservation.status)}
-                    </SeverityPill>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      <Link href={`/reservations/edit/${reservation._id}?isEdited=false`} passHref>
-                        <a>
-                          <MdOutlineRemoveRedEye
-                            fontSize={24}
-                            style={{ margin: "0px 5px", cursor: "pointer" }}
-                          />
-                        </a>
-                      </Link>
-                      <Link href={`/reservations/edit/${reservation._id}?isEdited=true`} passHref>
-                        <a>
-                          <MdOutlineEdit
-                            fontSize={24}
-                            style={{ margin: "0px 5px", cursor: "pointer" }}
-                          />
-                        </a>
-                      </Link>
-                      {/*
-                      <MdDeleteOutline
-                        fontSize={24}
-                        style={{ margin: "0px 5px", cursor: "pointer" }}
-                      /> */}
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {reservations.length === 0 ? (<TableRow>
+                <TableCell colSpan={11} align="center">
+                  There are no reservations today.
+                </TableCell>
+              </TableRow>
+              ) : (
+                reservations.map((reservation) => (
+                  <TableRow hover key={reservation.id}>
+                    <TableCell>{reservation._id}</TableCell>
+                    <TableCell>{reservation.userId.id}</TableCell>
+                    <TableCell>{reservation.userName}</TableCell>
+                    <TableCell>{`${reservation.reservationHour.timeFrame.slice(0, -3)}`}</TableCell>
+                    <TableCell>{`${reservation.phoneNumber}`}</TableCell>
+                    <TableCell>{`${capitalizedStr(reservation.species)} - ${capitalizedStr(reservation.breed)}`}</TableCell>
+                    <TableCell>{`${reservation.weight}`}</TableCell>
+                    <TableCell>{`${reservation.serviceType.name}`}</TableCell>
+                    <TableCell>{`$${getPrice(reservation)}`}</TableCell>
+                    <TableCell>
+                      <SeverityPill
+                        color={
+                          (reservation.status === "CANCELLED" && "warning") ||
+                          (reservation.status === "BOOKED" && "info") ||
+                          (reservation.status === "SUCCESS" && "success") ||
+                          "error"
+                        }
+                      >
+                        {renderReservationStatus(reservation.status)}
+                      </SeverityPill>
+                    </TableCell>
+                    <TableCell>
+                      <Box
+                        sx={{
+                          alignItems: "center",
+                          display: "flex",
+                        }}
+                      >
+                        <Link href={`/reservations/edit/${reservation._id}?isEdited=false`} passHref>
+                          <a>
+                            <MdOutlineRemoveRedEye
+                              fontSize={24}
+                              style={{ margin: "0px 5px", cursor: "pointer" }}
+                            />
+                          </a>
+                        </Link>
+                        <Link href={`/reservations/edit/${reservation._id}?isEdited=true`} passHref>
+                          <a>
+                            <MdOutlineEdit
+                              fontSize={24}
+                              style={{ margin: "0px 5px", cursor: "pointer" }}
+                            />
+                          </a>
+                        </Link>
+                        {/*
+                    <MdDeleteOutline
+                      fontSize={24}
+                      style={{ margin: "0px 5px", cursor: "pointer" }}
+                    /> */}
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+
             </TableBody>
           </Table>
         </Box>
@@ -137,7 +145,7 @@ export const TodayReservation = ({ reservations }) => {
           endIcon={<ArrowRightIcon fontSize="small" />}
           size="small"
           variant="text"
-          onClick={() => Router.push("/orders")}
+          onClick={() => Router.push("/reservations")}
         >
           View all
         </Button>

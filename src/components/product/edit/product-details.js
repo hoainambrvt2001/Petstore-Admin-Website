@@ -126,6 +126,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
                 onChange={handleChange}
                 value={values.name}
                 variant="outlined"
+                required
               />
             </Grid>
             <Grid item md={6} xs={12}>
@@ -140,6 +141,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
                 onChange={handleChange}
                 value={values.price}
                 variant="outlined"
+                required
               />
             </Grid>
             <Grid item md={6} xs={12}>
@@ -153,6 +155,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
                 onChange={handleChange}
                 value={values.code}
                 variant="outlined"
+                required
               />
             </Grid>
             <Grid item md={6} xs={12}>
@@ -166,41 +169,47 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
                 onChange={handleChange}
                 value={values.productSKU}
                 variant="outlined"
+                required
               />
             </Grid>
             <Grid item md={12} xs={12}>
-              <Typography variant="body2" color="#65748B" sx={{ mb: 1 }}>
-                Description
-              </Typography>
-              <Typography
-                variant="body2"
-                dangerouslySetInnerHTML={{ __html: values.description }}
-                sx={{ border: "1px solid #E6E8F0", borderRadius: "8px", padding: "15px 30px" }}
-              />
-            </Grid>
-            <Grid item md={12} xs={12}>
-              <Typography variant="body2" color="#65748B" sx={{ mb: 1 }}>
-                Short Description
-              </Typography>
-              <Typography
-                variant="body2"
-                dangerouslySetInnerHTML={{ __html: values.shortDescription }}
-                sx={{ border: "1px solid #E6E8F0", borderRadius: "8px", padding: "15px 30px" }}
-              />
-            </Grid>
-            <Grid item md={12} xs={12}>
-              <Typography variant="body2" color="#65748B" sx={{ mb: 1 }}>
-                Additional Info
-              </Typography>
-              <Typography
-                variant="body2"
-                dangerouslySetInnerHTML={{ __html: values.additionalInfos }}
-                sx={{
-                  border: "1px solid #E6E8F0",
-                  borderRadius: "8px",
-                  padding: "15px 30px",
-                  minHeight: "50px",
+              <TextField
+                InputProps={{
+                  readOnly: !isEdited,
                 }}
+                fullWidth
+                label="Description"
+                name="description"
+                onChange={handleChange}
+                value={values.description}
+                variant="outlined"
+                required
+              />
+            </Grid>
+            <Grid item md={12} xs={12}>
+              <TextField
+                InputProps={{
+                  readOnly: !isEdited,
+                }}
+                fullWidth
+                label="Short Description"
+                name="shortDescription"
+                onChange={handleChange}
+                value={values.shortDescription}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={12} xs={12}>
+              <TextField
+                InputProps={{
+                  readOnly: !isEdited,
+                }}
+                fullWidth
+                label="Additional Info"
+                name="additionalInfos"
+                onChange={handleChange}
+                value={values.additionalInfos}
+                variant="outlined"
               />
             </Grid>
             <Grid item md={12} xs={12}>
