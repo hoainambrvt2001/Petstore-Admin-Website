@@ -38,7 +38,7 @@ export const DashboardNavbar = (props) => {
       setNotificationData(data.countIsRead);
     }
   }, [data]);
-  console.log("notificationData", notificationData);
+  
   return (
     <>
       <DashboardNavbarRoot

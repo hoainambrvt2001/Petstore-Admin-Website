@@ -38,8 +38,7 @@ const ProductListResults = ({ products, ...rest }) => {
   const [page, setPage] = useState(0);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deleteId, setDeleteId] = useState("")
-  console.log("products", products);
-  console.log({ page, limit });
+
 
   const handleSelectAll = (event) => {
     let newSelectedProductIds;
@@ -91,7 +90,7 @@ const ProductListResults = ({ products, ...rest }) => {
   };
 
   const handleDelete = (id) => {
-    console.log(id)
+
     setDeleteId(id);
     setShowConfirmation(true);
   }
@@ -102,7 +101,7 @@ const ProductListResults = ({ products, ...rest }) => {
     })
   })
   const handleConfirmationClose = async (confirmed) => {
-    console.log("deleteId", deleteId);
+
     setShowConfirmation(false);
     if (confirmed) {
       try {
@@ -110,7 +109,7 @@ const ProductListResults = ({ products, ...rest }) => {
           variables: { deleteProductId: deleteId },
         })
         alert("The product is Deleted");
-        console.log(data);
+        
         window.location.href = "/products";
       }
       catch (error) {

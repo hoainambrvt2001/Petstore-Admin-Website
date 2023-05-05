@@ -44,7 +44,7 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
     price: serviceDetail.price.map(({ __typename, ...rest }) => rest),
     timeServe: serviceDetail.timeServe,
   });
-  console.log("values", values);
+
   const [numGrids, setNumGrids] = useState(0);
   const handleChange = (event) => {
     setValues({
@@ -94,7 +94,7 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
     });
   };
   const handlePriceName = () => {
-    console.log("before", values)
+
     const newPriceList = values.price.map((price, index) => {
       return {
         ...price,
@@ -107,12 +107,12 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
         updatedAt: new Date().toISOString(),
       };
     });
-    console.log("newPriceList", newPriceList);
+
     setValues({
       ...values,
       price: newPriceList,
     });
-    console.log("afftteer", values);
+
     return 1;
   };
 
@@ -135,7 +135,7 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
   const handleAddService = async () => {
     try {
       handlePriceName();
-      console.log("Abc", values);
+
       const { data } = await updateService({
         variables: {
           serviceType: values,
@@ -143,7 +143,7 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
         },
 
       });
-      console.log("res", data.updateServiceType);
+
       window.location.href = "/services";
     }
     catch (error) {

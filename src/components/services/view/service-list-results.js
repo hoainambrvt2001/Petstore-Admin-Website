@@ -34,7 +34,6 @@ mutation Mutation($deleteServiceTypeId: ID!) {
 }
 `
 const ServiceListResults = ({ services, ...rest }) => {
-  const [selectedServiceIds, setSelectedServiceIds] = useState([]);
   const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(0);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -42,40 +41,11 @@ const ServiceListResults = ({ services, ...rest }) => {
   const indexOfLastService = (page + 1) * limit;
   const indexOfFirstService = indexOfLastService - limit;
   const currentServices = services.slice(indexOfFirstService, indexOfLastService);
-  const handleSelectAll = (event) => {
-    let newSelectedServiceIds;
 
-    if (event.target.checked) {
-      newSelectedServiceIds = services.map((service) => service._id);
-    } else {
-      newSelectedServiceIds = [];
-    }
 
-    setSelectedServiceIds(newSelectedServiceIds);
 
-  };
-
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedServiceIds.indexOf(id);
-    let newSelectedServiceIds = [];
-
-    if (selectedIndex === -1) {
-      newSelectedServiceIds = newSelectedServiceIds.concat(selectedServiceIds, id);
-    } else if (selectedIndex === 0) {
-      newSelectedServiceIds = newSelectedServiceIds.concat(selectedServiceIds.slice(1));
-    } else if (selectedIndex === selectedServiceIds.length - 1) {
-      newSelectedServiceIds = newSelectedServiceIds.concat(selectedServiceIds.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedServiceIds = newSelectedServiceIds.concat(
-        selectedServiceIds.slice(0, selectedIndex),
-        selectedServiceIds.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelectedServiceIds(newSelectedServiceIds);
-  };
   const handleDelete = (id) => {
-    console.log(id)
+
     setDeleteId(id);
     setShowConfirmation(true);
   }
@@ -86,7 +56,7 @@ const ServiceListResults = ({ services, ...rest }) => {
     })
   })
   const handleConfirmationClose = async (confirmed) => {
-    console.log("deleteId", deleteId);
+
     setShowConfirmation(false);
     if (confirmed) {
       try {
@@ -94,7 +64,7 @@ const ServiceListResults = ({ services, ...rest }) => {
           variables: { deleteServiceTypeId: deleteId },
         })
         alert("The service is Deleted");
-        console.log(data);
+     
         window.location.href = "/services";
       }
       catch (error) {

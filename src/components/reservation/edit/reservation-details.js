@@ -39,7 +39,7 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
     if (price) return price.priceNumber;
     else return 0;
   }
-  
+
   const [values, setValues] = useState({
     userId: reservationDetail.userId.id,
     userName: reservationDetail.userName,
@@ -59,7 +59,7 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
     status: reservationDetail.status,
     totalPrice: getPrice(reservationDetail),
   });
-  console.log("value", values);
+
   const getType = (name) => {
     for (const i in serviceTypeDetail) {
       if (serviceTypeDetail[i]._id == name) return serviceTypeDetail[i].name;
@@ -68,14 +68,14 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
   }
   const userSlice = useSelector((state) => state.user);
   const handleChange = (event) => {
-    console.log("event", event);
+
     setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
   };
   const handleChangeServiceType = (event) => {
-    console.log("Event", event)
+
     for (const i in serviceTypeDetail) {
       if (serviceTypeDetail[i]._id == event.target.value) {
         setValues({
@@ -114,12 +114,12 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
     ));
   };
 
-  console.log(reservationDetail.status);
+
   const renderReservationServiceTypes = () => {
     const service_name = [];
     const service_id = [];
     const serviceTypeTitle = {};
-    console.log("detail", serviceTypeDetail);
+
     for (const serviceType in serviceTypeDetail) {
       service_name.push(serviceTypeDetail[serviceType].name);
       service_id.push(serviceTypeDetail[serviceType]._id);
@@ -127,7 +127,7 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
     for (const i in service_name) {
       serviceTypeTitle[service_id[i]] = service_name[i];
     }
-    console.log("title", serviceTypeTitle)
+
     return Object.keys(serviceTypeTitle).map((status, idx) => (
       <MenuItem value={status} key={idx}>
         {serviceTypeTitle[status]}
@@ -159,7 +159,7 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
       weight: Number(values.weight),
       phoneNumber: values.phoneNumber,
     };
-    console.log("body", body);
+    
     try {
       const { data } = await updateReservation({
         variables: { reservation: body, updateReservationId: reservationDetail._id },

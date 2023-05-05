@@ -35,7 +35,7 @@ mutation CreateProduct($product: CreateProductInput!, $files: [Upload!]) {
 }
 `
 const AddProductForm = ({ categories }) => {
-  console.log("cate", categories)
+
   const [values, setValues] = useState({
     name: "",
     productCode: "",
@@ -46,9 +46,9 @@ const AddProductForm = ({ categories }) => {
     shortDescription: "",
     additionalInfos: "",
   });
-  console.log("values", values);
+
   const [images, setImages] = useState([]);
-  console.log("img", images);
+
   const handleChange = (event) => {
     setValues({
       ...values,
@@ -56,7 +56,7 @@ const AddProductForm = ({ categories }) => {
     });
   };
   const handleFileChange = (event) => {
-    console.log("eve", event);
+
     setImages(event.target.files);
   }
   const link = createUploadLink({ uri: "http://localhost:3000/graphql" })
@@ -79,7 +79,7 @@ const AddProductForm = ({ categories }) => {
       shortDescription: values.shortDescription,
       additionalInfos: values.additionalInfos,
     }
-    console.log("body", body);
+
     try {
       const { data } = await createProduct({
         variables: {
@@ -87,7 +87,7 @@ const AddProductForm = ({ categories }) => {
           files: images,
         },
       })
-      console.log("res", data.createProduct);
+      
       alert("Product created successfully");
       window.location.href = "/products";
     } catch (error) {

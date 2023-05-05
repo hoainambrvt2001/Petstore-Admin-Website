@@ -79,7 +79,6 @@ const Page = () => {
       }
     }, [data]);
   }
-  console.log("DB data", dashboardData)
   if (!dashboardData) {
     return <h1>Loading ...</h1>;
   }

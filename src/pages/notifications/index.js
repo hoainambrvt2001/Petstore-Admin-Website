@@ -42,7 +42,7 @@ const Page = () => {
       setNotificationData(data.notifications);
     }
   }, [data]);
-  console.log("notificationData", notificationData);
+
   if (!notificationData) {
     return <h1>Loading ...</h1>;
   }

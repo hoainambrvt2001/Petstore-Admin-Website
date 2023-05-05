@@ -48,7 +48,7 @@ const AddServiceForm = ({ categories }) => {
     description: "",
     timeServe: "",
   });
-  console.log(values);
+
   const [prices, setPrices] = useState([{
     name: "",
     serviceId: 0,
@@ -125,14 +125,14 @@ const AddServiceForm = ({ categories }) => {
       timeServe: values.timeServe,
       selectedCount: 0,
     }
-    console.log("body", body);
+
 
     try {
       const { data } = await createService({
         variables: { serviceType: body },
 
       });
-      console.log("res", data.createServiceType);
+      
       alert("Services created successfully");
       window.location.href = "/services";
     }

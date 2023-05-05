@@ -114,13 +114,13 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
     const body = {
       status: values.status,
     };
-    console.log("body", body);
+
     try {
       const { data } = await updateOrder({
         variables: { input: body, updateOrderId: orderDetail._id },
       });
 
-      console.log('Updated order:', data.updateOrder);
+      
 
       navigateToPageAndRefresh("/orders");
     } catch (error) {

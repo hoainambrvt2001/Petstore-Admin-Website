@@ -47,7 +47,7 @@ const Page = ({ serviceId, isEdit }) => {
       setServiceData(data.serviceType);
     }
   }, [data]);
-  console.log(serviceData);
+
   if (!serviceData) {
     return <h1>Loading ...</h1>;
   }

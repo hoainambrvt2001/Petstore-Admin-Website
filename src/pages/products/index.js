@@ -54,7 +54,7 @@ const Page = ({ searchText }) => {
       setProductData(data.products);
     }
   }, [data]);
-  console.log("real", productData);
+
 
   if (!productData) {
     return <h1>Loading ...</h1>;

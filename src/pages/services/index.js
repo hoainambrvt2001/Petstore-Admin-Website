@@ -43,7 +43,7 @@ const Page = ({ searchText }) => {
     }
   }, [data]);
 
-  console.log("Data:", serviceData)
+
 
   if (!serviceData) {
     return <h1>Loading ...</h1>;

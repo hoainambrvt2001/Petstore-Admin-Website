@@ -68,7 +68,7 @@ const Page = () => {
   if (!reservationData) {
     return <h1>Loading ...</h1>;
   }
-  console.log("123", reservationData)
+
   return (
     <>
       <Head>

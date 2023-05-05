@@ -94,10 +94,7 @@ const OrderListResults = ({ orders, ...rest }) => {
     };
     return statusTitle[status];
   };
-  console.log("doc", orders);
-  orders.map((order) => (
-    console.log("firstName:", order.bill.firstName)
-  ))
+  )
   return (
     <Card {...rest}>
       <Grid container>

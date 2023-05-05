@@ -66,11 +66,11 @@ const Register = () => {
           email: values.email,
           password: values.password,
         }
-        console.log(inputs);
+
         const { data } = await signUpMutation({
           variables: { input: inputs },
         })
-        console.log("signUp", data.signUp)
+
         const registerData = data.signUp;
         if (registerData) {
           const userInfo = {

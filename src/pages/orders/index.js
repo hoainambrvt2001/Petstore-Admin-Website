@@ -48,7 +48,7 @@ const Page = () => {
       setOrderData(data.orders);
     }
   }, [data]);
-  console.log("orderData", orderData);
+
   if (!orderData) {
     return <h1>Loading ...</h1>;
   }

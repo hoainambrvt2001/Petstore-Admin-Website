@@ -49,11 +49,11 @@ const Login = () => {
           email: values.email,
           password: values.password,
         }
-        console.log(inputs);
+
         const { data } = await loginMutation({
           variables: { input: inputs },
         })
-        console.log("login", data.signIn)
+
         const loginInData = data.signIn;
         if (loginInData) {
           const userInfo = {

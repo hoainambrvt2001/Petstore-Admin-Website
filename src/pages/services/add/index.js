@@ -3,7 +3,7 @@ import { Box, Container, Typography } from "@mui/material";
 import { DashboardLayout } from "../../../components/dashboard-layout";
 import AddServiceForm from "../../../components/services/add/add-service-form";
 const Page = ({ services }) => {
-  console.log(services)
+
   return (
     <>
       <Head>

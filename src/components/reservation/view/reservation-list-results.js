@@ -25,10 +25,7 @@ const ReservationListResults = ({ reservations, ...rest }) => {
   const indexOfLastReservation = (page + 1) * limit;
   const indexOfFirstReservation = indexOfLastReservation - limit;
   const currentReservations = reservations.slice(indexOfFirstReservation, indexOfLastReservation);
-  reservations.map((reservation) => {
-    console.log("123", reservation.serviceType.name);
-  })
-  console.log("abc", reservations);
+
   const handleSelectAll = (event) => {
     let newSelectedReservationIds;
 
@@ -83,7 +80,7 @@ const ReservationListResults = ({ reservations, ...rest }) => {
     };
     return statusTitle[status.toUpperCase()];
   };
-  console.log("abc", reservations);
+  
   const price = []
   const getPrice = (reservation) => {
     const price = reservation.serviceType.price.find((i) => {

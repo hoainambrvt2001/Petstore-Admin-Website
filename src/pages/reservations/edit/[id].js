@@ -90,7 +90,7 @@ const Page = ({ isEdit, id }) => {
       },
     },
   });
-  console.log(data);
+
   useEffect(() => {
     if (data && data.reservation) {
       setReservationData(data.reservation);
@@ -102,8 +102,7 @@ const Page = ({ isEdit, id }) => {
   if (!reservationData) {
     return <h1>Loading...2</h1>;
   }
-  console.log("123", reservationData)
-  console.log("456", serviceTypeData)
+
   return (
     <>
       <Head>

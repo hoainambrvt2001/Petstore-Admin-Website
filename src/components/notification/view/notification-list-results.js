@@ -27,7 +27,7 @@ const CHANGE_ISREAD = gql
 }`
 
 const NotificationListResults = ({ notifications, ...rest }) => {
-  console.log(notifications)
+  
   const [selectedNotificationIds, setSelectedNotificationIds] = useState([]);
   const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(0);

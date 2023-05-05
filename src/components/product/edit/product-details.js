@@ -49,9 +49,9 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
     additionalInfos: productDetail.additionalInfos,
     images: productDetail.images,
   });
-  console.log("values", values);
+
   const [images, setImages] = useState([]);
-  console.log("img", images);
+
   const link = createUploadLink({ uri: "http://localhost:3000/graphql" })
   const [updateProduct, { loading: mutationLoading, error: mutationError }] = useMutation(UPDATE_PRODUCT, {
     client: new ApolloClient({
@@ -87,8 +87,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
       shortDescription: values.shortDescription,
       additionalInfos: values.additionalInfos,
     }
-    console.log("id", productDetail._id)
-    console.log("input", body)
+
     try {
       const { data } = await updateProduct({
         variables: {
@@ -97,7 +96,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
           files: images,
         },
       })
-      console.log("res", data.updateProduct);
+     
       window.location.href = "/products";
     } catch (error) {
       console.error('Error create product:', error.message);
