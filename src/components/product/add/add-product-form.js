@@ -81,13 +81,14 @@ const AddProductForm = ({ categories }) => {
     }
 
     try {
+      console.log("Image product:", images);
       const { data } = await createProduct({
         variables: {
           product: body,
           files: images,
         },
       })
-      
+
       alert("Product created successfully");
       window.location.href = "/products";
     } catch (error) {
@@ -213,7 +214,6 @@ const AddProductForm = ({ categories }) => {
               </Typography>
               <DropzoneWrapper>
                 <FileUploaderSingle setImages={setImages} />
-                {/* <input type="file" onChange={handleFileChange} /> */}
               </DropzoneWrapper>
             </Grid>
           </Grid>

@@ -49,11 +49,11 @@ const items = [
     icon: <IoMdCart fontSize={24} />,
     title: "Services",
   },
-  // {
-  //   href: "/account",
-  //   icon: <UserIcon fontSize="small" />,
-  //   title: "Account",
-  // },
+  {
+    href: "/staffs",
+    icon: <UserIcon fontSize="small" />,
+    title: "Staffs",
+  },
   // {
   //   href: "/notifications",
   //   icon: <CogIcon fontSize="small" />,

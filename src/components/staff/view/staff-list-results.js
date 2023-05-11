@@ -24,15 +24,14 @@ import { getInitials } from "../../../utils/get-initials";
 import { MdOutlineEdit, MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import Link from "next/link";
 import { ApolloClient, InMemoryCache, gql, useMutation } from "@apollo/client";
-const DELETE_PRODUCT = gql`
-mutation DeleteProduct($deleteProductId: ID!) {
-  deleteProduct(id: $deleteProductId) {
-    success
-    msg
+const DELETE_STAFF = gql`
+mutation Mutation($deleteUserId: ID!) {
+  deleteUser(id: $deleteUserId) {
+    id
   }
 }
 `
-const ProductListResults = ({ products, ...rest }) => {
+const StaffListResults = ({ staffs, ...rest }) => {
   const [selectedProductIds, setSelectedProductIds] = useState([]);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
@@ -44,7 +43,7 @@ const ProductListResults = ({ products, ...rest }) => {
     let newSelectedProductIds;
 
     if (event.target.checked) {
-      newSelectedProductIds = products.map((product) => product.id);
+      newSelectedProductIds = staffs.map((staff) => staff.id);
     } else {
       newSelectedProductIds = [];
     }
@@ -94,7 +93,7 @@ const ProductListResults = ({ products, ...rest }) => {
     setDeleteId(id);
     setShowConfirmation(true);
   }
-  const [deleteProductMutation, { loading: mutationLoading, error: mutationError }] = useMutation(DELETE_PRODUCT, {
+  const [deleteStaffMutation, { loading: mutationLoading, error: mutationError }] = useMutation(DELETE_STAFF, {
     client: new ApolloClient({
       uri: 'http://localhost:3000/graphql',
       cache: new InMemoryCache(),
@@ -105,12 +104,12 @@ const ProductListResults = ({ products, ...rest }) => {
     setShowConfirmation(false);
     if (confirmed) {
       try {
-        const { data } = await deleteProductMutation({
-          variables: { deleteProductId: deleteId },
+        const { data } = await deleteStaffMutation({
+          variables: { deleteUserId: deleteId },
         })
-        alert("The product is Deleted");
+        alert("The staff is Deleted");
 
-        window.location.href = "/products";
+        window.location.href = "/staffs";
       }
       catch (error) {
         console.log(error);
@@ -127,74 +126,50 @@ const ProductListResults = ({ products, ...rest }) => {
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
-                <Checkbox
-                  checked={selectedProductIds.length === products.length}
-                  color="primary"
-                  indeterminate={
-                    selectedProductIds.length > 0 && selectedProductIds.length < products.length
-                  }
-                  onChange={handleSelectAll}
-                />
+
               </TableCell>
+              <TableCell>ID</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Code</TableCell>
-              <TableCell>SKU</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Price</TableCell>
               <TableCell>Action</TableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.slice(page * limit, (page + 1) * limit).map((product) => (
+            {staffs.slice(page * limit, (page + 1) * limit).map((staff)=>(
               <TableRow
-                hover
-                key={product.id}
-                selected={selectedProductIds.indexOf(product.id) !== -1}
+              hover
+              key={staff.id}
+
+            >
+              <TableCell>
+              <Box
+                sx={{
+                  alignItems: "center",
+                  display: "flex",
+                }}
               >
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedProductIds.indexOf(product.id) !== -1}
-                    onChange={(event) => handleSelectOne(event, product.id)}
-                    value="true"
-                  />
-                </TableCell>
-                <TableCell>
+                <Avatar
+                  src={
+                    staff.avatar
+                      ? staff.avatar.url
+                      : "/static/images/avatars/blank_avatar.png"
+                  }
+                  sx={{ width: 56, height: 56, mr: 2 }}
+                >
+                  {getInitials(staff.name)}
+                </Avatar>
+              </Box>
+            </TableCell>
+            <TableCell>{staff.id}</TableCell>
+            <TableCell>{`${staff.firstName} ${staff.lastName}`}</TableCell>
+            <TableCell>
                   <Box
                     sx={{
                       alignItems: "center",
                       display: "flex",
                     }}
                   >
-                    <Avatar
-                      src={
-                        product.images.length !== 0
-                          ? product.images[0].url
-                          : "/static/images/no-image-2.png"
-                      }
-                      alt={
-                        product.images.length !== 0 ? product.images[0].image_name : "product image"
-                      }
-                      sx={{ width: 56, height: 56, mr: 2 }}
-                    >
-                      {getInitials(product.name)}
-                    </Avatar>
-                    <Typography color="textPrimary" variant="body1">
-                      {product.name}
-                    </Typography>
-                  </Box>
-                </TableCell>
-                <TableCell>{product.productCode}</TableCell>
-                <TableCell>{product.productSKU}</TableCell>
-                <TableCell>{renderProductCategories(product.categories)}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      alignItems: "center",
-                      display: "flex",
-                    }}
-                  >
-                    <Link href={`/products/edit/${product._id}?isEdited=false`} passHref>
+                    <Link href={`/staffs/edit/${staff.id}?isEdited=false`} passHref>
                       <a>
                         <MdOutlineRemoveRedEye
                           fontSize={24}
@@ -203,7 +178,7 @@ const ProductListResults = ({ products, ...rest }) => {
                       </a>
                     </Link>
 
-                    <Link href={`/products/edit/${product._id}?isEdited=true`} passHref>
+                    <Link href={`/staffs/edit/${staff.id}?isEdited=true`} passHref>
                       <a>
                         <MdOutlineEdit
                           fontSize={24}
@@ -215,19 +190,21 @@ const ProductListResults = ({ products, ...rest }) => {
                       <MdDeleteOutline
                         fontSize={24}
                         style={{ margin: "0px 5px", cursor: "pointer" }}
-                        onClick={() => handleDelete(product._id)}
+                        onClick={() => handleDelete(staff.id)}
                       />
                     </a>
                   </Box>
                 </TableCell>
-              </TableRow>
+            </TableRow>
             ))}
           </TableBody>
+
+
         </Table>
       </Grid>
       <TablePagination
         component="div"
-        count={products.length}
+        count={staffs.length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
         page={page}
@@ -238,7 +215,7 @@ const ProductListResults = ({ products, ...rest }) => {
         <Dialog open={showConfirmation} onClose={() => handleConfirmationClose(false)}>
           <DialogTitle><Typography fontWeight={"bold"} fontSize={25}>Confirm Submission</Typography></DialogTitle>
           <DialogContent>
-            <DialogContentText> Are you sure to delete this product? </DialogContentText>
+            <DialogContentText> Are you sure to delete this staff? </DialogContentText>
 
           </DialogContent>
           <DialogActions>
@@ -251,8 +228,8 @@ const ProductListResults = ({ products, ...rest }) => {
   );
 };
 
-ProductListResults.propTypes = {
-  products: PropTypes.array.isRequired,
+StaffListResults.propTypes = {
+  staffs: PropTypes.array.isRequired,
 };
 
-export default ProductListResults;
+export default StaffListResults;

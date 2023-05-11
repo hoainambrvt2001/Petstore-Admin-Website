@@ -14,7 +14,7 @@ import { Search as SearchIcon } from "../../../icons/search";
 import { Upload as UploadIcon } from "../../../icons/upload";
 import Router from "next/router";
 
-const ServiceListToolbar = (props) => {
+const StaffListToolbar = (props) => {
 
   return (
     <Box {...props}>
@@ -28,7 +28,7 @@ const ServiceListToolbar = (props) => {
         }}
       >
         <Typography sx={{ m: 1 }} variant="h4">
-          Services
+          Staffs
         </Typography>
         <Box sx={{ m: 1 }}>
           {/* <Button startIcon={<UploadIcon fontSize="small" />} sx={{ mr: 1 }}>
@@ -37,8 +37,8 @@ const ServiceListToolbar = (props) => {
           <Button startIcon={<DownloadIcon fontSize="small" />} sx={{ mr: 1 }}>
             Export
           </Button> */}
-          <Button color="primary" variant="contained" onClick={() => Router.push("/services/add")}>
-            Add service
+          <Button color="primary" variant="contained" onClick={() => Router.push("/staffs/add")}>
+            Create new staff
           </Button>
         </Box>
       </Box>
@@ -46,4 +46,4 @@ const ServiceListToolbar = (props) => {
   );
 };
 
-export default ServiceListToolbar;
+export default StaffListToolbar;
