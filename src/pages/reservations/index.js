@@ -6,6 +6,7 @@ import { DashboardLayout } from "../../components/dashboard-layout";
 import ReservationListResults from "../../components/reservation/view/reservation-list-results";
 import { useSelector } from "react-redux";
 import { useQuery, gql } from '@apollo/client';
+import Calendar from "../../components/calendar/calendar";
 
 const GET_RESERVATIONS = gql`
 query Reservations {
@@ -83,6 +84,7 @@ const Page = () => {
       >
         <Container maxWidth={false}>
           <ReservationListToolbar />
+          <Calendar reservations={reservationData}/>
           <Box sx={{ mt: 3 }}>
             <ReservationListResults
               reservations={reservationData}

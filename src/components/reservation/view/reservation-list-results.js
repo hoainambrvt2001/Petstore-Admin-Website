@@ -80,7 +80,7 @@ const ReservationListResults = ({ reservations, ...rest }) => {
     };
     return statusTitle[status.toUpperCase()];
   };
-  
+
   const price = []
   const getPrice = (reservation) => {
     const price = reservation.serviceType.price.find((i) => {
@@ -145,7 +145,7 @@ const ReservationListResults = ({ reservations, ...rest }) => {
                   <TableCell>
                     <SeverityPill
                       color={
-                        (reservation.status === "CANCELLED" && "warning") ||
+                        (reservation.status === "CANCELLED" && "error") ||
                         (reservation.status === "BOOKED" && "info") ||
                         (reservation.status === "SUCCESS" && "success") ||
                         "error"

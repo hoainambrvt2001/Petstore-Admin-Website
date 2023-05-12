@@ -78,6 +78,7 @@ const StaffDetails = ({ isEdited, setIsEdited, staffDetail }) => {
         },
       })
 
+      
 
 
       window.location.href = "/staffs";

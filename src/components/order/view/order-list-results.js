@@ -94,7 +94,7 @@ const OrderListResults = ({ orders, ...rest }) => {
     };
     return statusTitle[status];
   };
-  )
+  
   return (
     <Card {...rest}>
       <Grid container>

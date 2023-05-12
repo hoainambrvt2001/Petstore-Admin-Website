@@ -53,6 +53,16 @@ query Reservation($reservationId: ID!) {
     }
     note
     status
+    staffId {
+      id
+      firstName
+      lastName
+      email
+      phone
+      avatar {
+        url
+      }
+    }
   }
   serviceTypes {
     _id
@@ -69,6 +79,17 @@ query Reservation($reservationId: ID!) {
     timeServe
 
   }
+  staffs {
+    id
+    firstName
+    lastName
+    email
+    phone
+    avatar {
+      id
+      url
+    }
+  }
 }
 `
 
@@ -77,6 +98,7 @@ const Page = ({ isEdit, id }) => {
   const [isEdited, setIsEdited] = useState(isEdit === "true");
   const [reservationData, setReservationData] = useState("");
   const [serviceTypeData, setServiceTypeData] = useState("");
+  const [staffData, setStaffData] = useState("");
   const userSlice = useSelector((state) => state.user);
   const client = new ApolloClient({
     uri: 'http://localhost:3000/graphql',
@@ -97,6 +119,9 @@ const Page = ({ isEdit, id }) => {
     }
     if (data && data.serviceTypes) {
       setServiceTypeData(data.serviceTypes);
+    }
+    if (data && data.staffs){
+      setStaffData(data.staffs);
     }
   }, [data]);
   if (!reservationData) {
@@ -124,6 +149,7 @@ const Page = ({ isEdit, id }) => {
             setIsEdited={setIsEdited}
             reservationDetail={reservationData}
             serviceTypeDetail={serviceTypeData}
+            staffList={staffData}
           />
         </Container>
       </Box>

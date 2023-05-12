@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -18,6 +19,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import Router from "next/router";
 import { gql, useMutation, ApolloClient, InMemoryCache } from '@apollo/client';
+import StaffSelection from "./staff-card";
 const UPDATE_RESERVATION = gql`
 mutation UpdateReservation($reservation: UpdateReservationInput!, $updateReservationId: ID!) {
   updateReservation(reservation: $reservation, id: $updateReservationId) {
@@ -31,7 +33,8 @@ mutation UpdateReservation($reservation: UpdateReservationInput!, $updateReserva
 }
 `;
 
-const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceTypeDetail }) => {
+const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceTypeDetail, staffList }) => {
+
   const getPrice = (reservation) => {
     const price = reservation.serviceType.price.find((i) => {
       return reservation.weight >= i.minWeight && reservation.weight < i.maxWeight;
@@ -58,8 +61,11 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
     description: reservationDetail.location.description,
     status: reservationDetail.status,
     totalPrice: getPrice(reservationDetail),
+    staffId: reservationDetail.staffId ? reservationDetail.staffId : ""
   });
-
+  const [staff, setStaff] = useState(values.staffId);
+  console.log("staff here", staff);
+  console.log(reservationDetail);
   const getType = (name) => {
     for (const i in serviceTypeDetail) {
       if (serviceTypeDetail[i]._id == name) return serviceTypeDetail[i].name;
@@ -158,22 +164,26 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
       breed: values.breed,
       weight: Number(values.weight),
       phoneNumber: values.phoneNumber,
+      staffId: staff.id,
     };
-    
+    console.log('body', body);
     try {
-      const { data } = await updateReservation({
-        variables: { reservation: body, updateReservationId: reservationDetail._id },
-      });
+      if (body.status !== "SUCCESS" || body.staffId) {
+        const { data } = await updateReservation({
+          variables: { reservation: body, updateReservationId: reservationDetail._id },
+        });
 
-      console.log('Updated reservation:', data.updateReservation);
-
-      navigateToPageAndRefresh("/reservations");
+        console.log('Updated reservation:', data.updateReservation);
+        setIsEdited(!isEdited);
+        window.location.href = "/reservations";
+      } else {
+        // Handle the case when body.status is "SUCCESS" but body.staffId is null
+        alert("Cannot update reservation: body.staffId is null");
+      }
     } catch (error) {
       console.error('Error updating reservation:', error);
+      alert(error);
     }
-    setIsEdited(!isEdited);
-
-
   };
 
   const handleSwapMode = () => {
@@ -378,6 +388,14 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
                   {renderReservationStatus()}
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <StaffSelection
+              staffList={staffList}
+              setStaff={setStaff}
+              currentStaff={values.staffId}
+              isEdited={isEdited}
+              ></StaffSelection>
             </Grid>
           </Grid>
         </CardContent>
