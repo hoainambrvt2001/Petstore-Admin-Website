@@ -56,8 +56,8 @@ export const LatestOrders = ({ orders }) => {
             </TableHead>
             <TableBody>
               {orders.map((order) => (
-                <TableRow hover key={order._id}>
-                  <TableCell>{order._id}</TableCell>
+                <TableRow hover key={order.id}>
+                  <TableCell>{order.id}</TableCell>
                   <TableCell>{order.bill.firstName + " " + order.bill.lastName}</TableCell>
                   <TableCell>{format(new Date(order.createdAt), "dd/MM/yyyy")}</TableCell>
                   <TableCell>
@@ -80,7 +80,7 @@ export const LatestOrders = ({ orders }) => {
                         display: "flex",
                       }}
                     >
-                      <Link href={`/orders/edit/${order._id}?isEdited=false`} passHref>
+                      <Link href={`/orders/edit/${order.id}?isEdited=false`} passHref>
                         <a>
                           <MdOutlineRemoveRedEye
                             fontSize={24}

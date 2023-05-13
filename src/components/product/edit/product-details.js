@@ -96,7 +96,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
           files: images,
         },
       })
-     
+
       window.location.href = "/products";
     } catch (error) {
       console.error('Error create product:', error.message);

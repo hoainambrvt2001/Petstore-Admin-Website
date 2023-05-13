@@ -16,12 +16,6 @@ query Notifications {
     orderId
     reservationId
     type
-    reservation {
-      _id
-    }
-    order {
-      _id
-    }
     isRead
     createdAt
   }

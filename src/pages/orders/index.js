@@ -12,7 +12,7 @@ const GET_ORDERS = gql`
 query Orders($limit: Int) {
   orders(limit: $limit) {
     docs {
-      _id
+      id
       totalPrice
       status
       createdAt

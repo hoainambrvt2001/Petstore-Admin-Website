@@ -23,7 +23,7 @@ query Dashboard {
     totalPendingOrder
   }
   latestOrders {
-    _id
+    id
     bill {
       firstName
       lastName

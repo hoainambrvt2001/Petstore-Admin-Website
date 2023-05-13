@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import FileUploaderSingle from "./upload-images";
-import DropzoneWrapper from "../styles/index";
+import DropzoneWrapper from "./styles/index";
 import { ApolloClient, InMemoryCache, gql, useMutation } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
 
@@ -21,13 +21,13 @@ mutation UpdateUser($updateUserId: ID!, $input: StaffInput, $files: [Upload]) {
     id
   }
 }`
-const StaffDetails = ({ isEdited, setIsEdited, staffDetail }) => {
+const AccountDetails = ({ isEdited, setIsEdited, accountDetail }) => {
   const [values, setValues] = useState({
-    firstName: staffDetail.firstName,
-    lastName: staffDetail.lastName,
-    email: staffDetail.email,
-    phone: staffDetail.phone,
-    avatar: staffDetail.avatar,
+    firstName: accountDetail.firstName,
+    lastName: accountDetail.lastName,
+    email: accountDetail.email,
+    phone: accountDetail.phone? accountDetail.phone:"",
+    avatar: accountDetail.avatar,
     password: "",
     confirmPassword: ""
   });
@@ -72,7 +72,7 @@ const StaffDetails = ({ isEdited, setIsEdited, staffDetail }) => {
 
       const { data } = await updateStaff({
         variables: {
-          updateUserId: staffDetail.id,
+          updateUserId: accountDetail.id,
           input: body,
           files: images ? images : [],
         },
@@ -81,7 +81,7 @@ const StaffDetails = ({ isEdited, setIsEdited, staffDetail }) => {
 
 
 
-      window.location.href = "/staffs";
+      window.location.href = "/";
     } catch (error) {
       console.error('Error update staff:', error.message);
     }
@@ -95,7 +95,7 @@ const StaffDetails = ({ isEdited, setIsEdited, staffDetail }) => {
 
     <form autoComplete="off" noValidate encType="multipart/form-data">
       <Card>
-        <CardHeader title="Staff Detail" />
+        <CardHeader title="Account Detail" />
         <Divider />
         <CardContent>
 
@@ -226,7 +226,7 @@ const StaffDetails = ({ isEdited, setIsEdited, staffDetail }) => {
           }}
         >
           <Button color="primary" variant="contained" onClick={handleSaveChanges}>
-            Update staff
+            Update account
           </Button>
         </Box>
       </Card>
@@ -234,4 +234,4 @@ const StaffDetails = ({ isEdited, setIsEdited, staffDetail }) => {
   );
 };
 
-export default StaffDetails;
+export default AccountDetails;

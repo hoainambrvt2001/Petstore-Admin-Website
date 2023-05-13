@@ -14,7 +14,9 @@ export const AccountPopover = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
   // const authContext = useContext(AuthContext);
-
+  const navigateToAccount = async () => {
+    window.location.href = "/account";
+  }
   const handleSignOut = async () => {
     onClose?.();
 
@@ -99,6 +101,7 @@ export const AccountPopover = (props) => {
           },
         }}
       >
+        <MenuItem onClick={navigateToAccount}>Account</MenuItem>
         <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
       </MenuList>
     </Popover>

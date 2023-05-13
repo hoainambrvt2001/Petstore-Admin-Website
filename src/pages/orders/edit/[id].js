@@ -11,7 +11,7 @@ import { ApolloClient, InMemoryCache, gql, useQuery } from "@apollo/client";
 const GET_ORDER = gql`
 query Order($orderId: ID!) {
   order(id: $orderId) {
-    _id
+    id
     bill {
       firstName
       lastName
@@ -30,7 +30,7 @@ query Order($orderId: ID!) {
       quantity
       id
       images {
-        _id
+        id
         image_name
         url
       }
