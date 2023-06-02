@@ -35,7 +35,7 @@ const Page = () => {
 
   const { loading, error, data } = useQuery(GET_ORDERS, {
 
-    uri: 'http://localhost:3000/graphql',
+    uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
     headers: {
       Authorization: `Bearer ${userSlice.token}`,
     },
@@ -48,7 +48,6 @@ const Page = () => {
       setOrderData(data.orders);
     }
   }, [data]);
-
   if (!orderData) {
     return <h1>Loading ...</h1>;
   }

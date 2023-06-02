@@ -106,7 +106,7 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
   };
   const [updateOrder, { loading: mutationLoading, error: mutationError }] = useMutation(UPDATE_ORDER, {
     client: new ApolloClient({
-      uri: "http://localhost:3000/graphql",
+      uri: "https://thesis-backend-production-99f6.up.railway.app/graphql",
       cache: new InMemoryCache(),
     }),
   });
@@ -120,7 +120,7 @@ const OrderDetails = ({ isEdited, setIsEdited, orderDetail }) => {
         variables: { input: body, updateOrderId: orderDetail._id },
       });
 
-      
+
 
       navigateToPageAndRefresh("/orders");
     } catch (error) {

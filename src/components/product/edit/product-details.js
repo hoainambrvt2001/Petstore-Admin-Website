@@ -52,7 +52,7 @@ const ProductDetails = ({ isEdited, setIsEdited, productDetail }) => {
 
   const [images, setImages] = useState([]);
 
-  const link = createUploadLink({ uri: "http://localhost:3000/graphql" })
+  const link = createUploadLink({ uri: "https://thesis-backend-production-99f6.up.railway.app/graphql" })
   const [updateProduct, { loading: mutationLoading, error: mutationError }] = useMutation(UPDATE_PRODUCT, {
     client: new ApolloClient({
       link,

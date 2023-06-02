@@ -136,7 +136,7 @@ const StaffListResults = ({ staffs, role, ...rest }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {staffs.slice(page * limit, (page + 1) * limit).map((staff) => (
+            {staffs.filter((staff) => staff.role === "USER").slice(page * limit, (page + 1) * limit).map((staff) => (
               <TableRow
                 hover
                 key={staff.id}
@@ -209,7 +209,7 @@ const StaffListResults = ({ staffs, role, ...rest }) => {
       </Grid>
       <TablePagination
         component="div"
-        count={staffs.length}
+        count={staffs.filter((staff) => staff.role === "USER").length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
         page={page}

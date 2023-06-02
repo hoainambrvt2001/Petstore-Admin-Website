@@ -51,7 +51,7 @@ const ServiceListResults = ({ services, ...rest }) => {
   }
   const [deleteServiceMutation, { loading: mutationLoading, error: mutationError }] = useMutation(DELETE_SERVICE, {
     client: new ApolloClient({
-      uri: 'http://localhost:3000/graphql',
+      uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
       cache: new InMemoryCache(),
     })
   })
@@ -64,7 +64,7 @@ const ServiceListResults = ({ services, ...rest }) => {
           variables: { deleteServiceTypeId: deleteId },
         })
         alert("The service is Deleted");
-     
+
         window.location.href = "/services";
       }
       catch (error) {

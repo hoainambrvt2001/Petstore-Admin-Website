@@ -3,22 +3,23 @@ import { useState, useEffect } from "react";
 import { Box, Container, Pagination } from "@mui/material";
 import { DashboardLayout } from "../../components/dashboard-layout";
 import axios from "axios";
-import StaffListToolbar from "../../components/staff/view/staff-list-toolbar";
-import StaffListResults from "../../components/staff/view/staff-list-results";
+import StaffListToolbar from "../../components/user/view/staff-list-toolbar";
+import StaffListResults from "../../components/user/view/staff-list-results";
 import { ApolloClient, InMemoryCache, gql, useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 
 const SEARCH_STAFF = gql`
-query Query {
-  staffs {
-    firstName
-    lastName
-    email
-    phone
+query Users {
+  users {
     id
+    firstName
+    email
+    lastName
+    role
+    phone
     avatar {
-      url
       id
+      url
     }
   }
 }`
@@ -31,9 +32,9 @@ const Page = ({ searchText }) => {
   });
   const { loading, error, data } = useQuery(SEARCH_STAFF, {});
   useEffect(() => {
-    if (data && data.staffs) {
+    if (data && data.users) {
 
-      setStaffData(data.staffs);
+      setStaffData(data.users);
       console.log("data", staffData.length);
     }
   }, [data]);

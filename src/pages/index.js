@@ -11,6 +11,7 @@ import { TodayReservation } from "../components/dashboard/today-reservation";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { gql, useQuery } from "@apollo/client";
+import { TopService } from "../components/dashboard/top-service";
 const GET_DASHBOARD = gql`
 query Dashboard {
   totalReservationSales {
@@ -61,14 +62,19 @@ query Dashboard {
       id
     }
   }
+  getTopService {
+    name
+    count
+  }
 }`
 
 const Page = () => {
   const userSlice = useSelector((state) => state.user);
+  const state = useSelector((state) => state);
   const [dashboardData, setDashboardData] = useState("");
   if (userSlice.token) {
     const { loading, error, data } = useQuery(GET_DASHBOARD, {
-      uri: 'http://localhost:3000/graphql',
+      uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
       headers: {
         Authorization: `Bearer ${userSlice.token}`,
       },
@@ -109,12 +115,16 @@ const Page = () => {
             <Grid item xl={3} lg={3} sm={6} xs={12}>
               <Sale text="Service Sale" totalSale={dashboardData.totalReservationSales.totalSales} />
             </Grid>
+            <Grid item xl={6} lg={6} sm={6} xs={12}>
+              <TopService topService={dashboardData.getTopService} />
+            </Grid>
+            {/* <Grid item lg={4} md={6} xl={3} xs={12}>
+            <TrafficByDevice sx={{ height: "100%" }} />
+          </Grid> */}
             {/* <Grid item lg={8} md={12} xl={9} xs={12}>
             <Sales />
           </Grid>
-          <Grid item lg={4} md={6} xl={3} xs={12}>
-            <TrafficByDevice sx={{ height: "100%" }} />
-          </Grid>
+
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <LatestProducts sx={{ height: "100%" }} />
           </Grid> */}

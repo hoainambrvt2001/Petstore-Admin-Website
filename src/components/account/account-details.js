@@ -26,7 +26,7 @@ const AccountDetails = ({ isEdited, setIsEdited, accountDetail }) => {
     firstName: accountDetail.firstName,
     lastName: accountDetail.lastName,
     email: accountDetail.email,
-    phone: accountDetail.phone? accountDetail.phone:"",
+    phone: accountDetail.phone ? accountDetail.phone : "",
     avatar: accountDetail.avatar,
     password: "",
     confirmPassword: ""
@@ -37,7 +37,7 @@ const AccountDetails = ({ isEdited, setIsEdited, accountDetail }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [images, setImages] = useState(null);
 
-  const link = createUploadLink({ uri: "http://localhost:3000/graphql" })
+  const link = createUploadLink({ uri: "https://thesis-backend-production-99f6.up.railway.app/graphql" })
   const [updateStaff, { loading: mutationLoading, error: mutationError }] = useMutation(UPDATE_STAFF, {
     client: new ApolloClient({
       link,

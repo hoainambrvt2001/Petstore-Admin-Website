@@ -54,6 +54,11 @@ const items = [
     icon: <UserIcon fontSize="small" />,
     title: "Staffs",
   },
+  {
+    href: "/users",
+    icon: <UserIcon fontSize="small" />,
+    title: "Users",
+  },
   // {
   //   href: "/notifications",
   //   icon: <CogIcon fontSize="small" />,

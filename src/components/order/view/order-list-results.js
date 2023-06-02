@@ -30,7 +30,7 @@ const OrderListResults = ({ orders, ...rest }) => {
     let newSelectedOrderIds;
 
     if (event.target.checked) {
-      newSelectedOrderIds = orders.map((order) => order._id);
+      newSelectedOrderIds = orders.map((order) => order.id);
     } else {
       newSelectedOrderIds = [];
     }
@@ -94,7 +94,7 @@ const OrderListResults = ({ orders, ...rest }) => {
     };
     return statusTitle[status];
   };
-  
+
   return (
     <Card {...rest}>
       <Grid container>
@@ -126,17 +126,17 @@ const OrderListResults = ({ orders, ...rest }) => {
               {currentOrders.map((order) => (
                 <TableRow
                   hover
-                  key={order._id}
-                  selected={selectedOrderIds.indexOf(order._id) !== -1}
+                  key={order.id}
+                  selected={selectedOrderIds.indexOf(order.id) !== -1}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedOrderIds.indexOf(order._id) !== -1}
-                      onChange={(event) => handleSelectOne(event, order._id)}
+                      checked={selectedOrderIds.indexOf(order.id) !== -1}
+                      onChange={(event) => handleSelectOne(event, order.id)}
                       value="true"
                     />
                   </TableCell>
-                  <TableCell>{order._id}</TableCell>
+                  <TableCell>{order.id}</TableCell>
                   <TableCell>{`${order.bill.firstName} ${order.bill.lastName}`}</TableCell>
                   <TableCell>{renderOrderDate(order.createdAt)}</TableCell>
                   <TableCell>{renderShipTo(order.bill)}</TableCell>
@@ -161,7 +161,7 @@ const OrderListResults = ({ orders, ...rest }) => {
                         display: "flex",
                       }}
                     >
-                      <Link href={`/orders/edit/${order._id}?isEdited=false`} passHref>
+                      <Link href={`/orders/edit/${order.id}?isEdited=false`} passHref>
                         <a>
                           <MdOutlineRemoveRedEye
                             fontSize={24}
@@ -169,7 +169,7 @@ const OrderListResults = ({ orders, ...rest }) => {
                           />
                         </a>
                       </Link>
-                      <Link href={`/orders/edit/${order._id}?isEdited=true`} passHref>
+                      <Link href={`/orders/edit/${order.id}?isEdited=true`} passHref>
                         <a>
                           <MdOutlineEdit
                             fontSize={24}

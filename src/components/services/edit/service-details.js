@@ -128,7 +128,7 @@ const ServiceDetails = ({ isEdited, setIsEdited, serviceDetail }) => {
   const userSlice = useSelector((state) => state.user);
   const [updateService, { loading: mutationLoading, error: mutationError }] = useMutation(UPDATE_SERVICE, {
     client: new ApolloClient({
-      uri: 'http://localhost:3000/graphql',
+      uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
       cache: new InMemoryCache(),
     })
   })

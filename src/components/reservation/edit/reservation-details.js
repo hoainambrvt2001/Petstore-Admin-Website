@@ -151,7 +151,7 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
   };
   const [updateReservation, { loading: mutationLoading, error: mutationError }] = useMutation(UPDATE_RESERVATION, {
     client: new ApolloClient({
-      uri: "http://localhost:3000/graphql",
+      uri: "https://thesis-backend-production-99f6.up.railway.app/graphql",
       cache: new InMemoryCache(),
     }),
   });
@@ -391,10 +391,10 @@ const ReservationDetails = ({ isEdited, setIsEdited, reservationDetail, serviceT
             </Grid>
             <Grid item md={6} xs={12}>
               <StaffSelection
-              staffList={staffList}
-              setStaff={setStaff}
-              currentStaff={values.staffId}
-              isEdited={isEdited}
+                staffList={staffList}
+                setStaff={setStaff}
+                currentStaff={values.staffId}
+                isEdited={isEdited}
               ></StaffSelection>
             </Grid>
           </Grid>

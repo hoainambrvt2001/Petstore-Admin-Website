@@ -27,7 +27,7 @@ const CHANGE_ISREAD = gql
 }`
 
 const NotificationListResults = ({ notifications, ...rest }) => {
-  
+
   const [selectedNotificationIds, setSelectedNotificationIds] = useState([]);
   const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(0);
@@ -36,7 +36,7 @@ const NotificationListResults = ({ notifications, ...rest }) => {
   const currentNotifications = notifications.slice(indexOfFirstNotification, indexOfLastNotification);
   const [updateRead, { loading: mutationLoading, error: mutationError }] = useMutation(CHANGE_ISREAD, {
     client: new ApolloClient({
-      uri: "http://localhost:3000/graphql",
+      uri: "https://thesis-backend-production-99f6.up.railway.app/graphql",
       cache: new InMemoryCache(),
     }),
   });

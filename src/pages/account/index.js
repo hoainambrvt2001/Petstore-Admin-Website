@@ -25,7 +25,7 @@ const Page = () => {
   const [accountData, setAccountData] = useState("");
   const userSlice = useSelector((state) => state.user);
   const { loading, error, data } = useQuery(GET_ACCOUNT, {
-    uri: 'http://localhost:3000/graphql',
+    uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
     context: {
       headers: {
         Authorization: `Bearer ${userSlice.token}`,

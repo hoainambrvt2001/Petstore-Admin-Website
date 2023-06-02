@@ -56,7 +56,7 @@ const Page = () => {
   const userSlice = useSelector((state) => state.user);
 
   const { loading, error, data } = useQuery(GET_RESERVATIONS, {
-    uri: 'http://localhost:3000/graphql',
+    uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
     headers: {
       Authorization: `Bearer ${userSlice.token}`,
     },
@@ -84,7 +84,7 @@ const Page = () => {
       >
         <Container maxWidth={false}>
           <ReservationListToolbar />
-          <Calendar reservations={reservationData}/>
+          <Calendar reservations={reservationData} />
           <Box sx={{ mt: 3 }}>
             <ReservationListResults
               reservations={reservationData}

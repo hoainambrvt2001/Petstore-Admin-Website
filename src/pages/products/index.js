@@ -33,7 +33,7 @@ const Page = ({ searchText }) => {
   const [productData, setProductData] = useState("");
   const userSlice = useSelector((state) => state.user);
   const client = new ApolloClient({
-    uri: 'http://localhost:3000/graphql',
+    uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
     cache: new InMemoryCache(),
   });
   const { loading, error, data } = useQuery(SEARCH_PRODUCTS, {

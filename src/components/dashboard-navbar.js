@@ -28,7 +28,7 @@ export const DashboardNavbar = (props) => {
   const userSlice = useSelector((state) => state.user);
   const [notificationData, setNotificationData] = useState(0);
   const { loading, error, data } = useQuery(GET_ISREAD, {
-    uri: "http://localhost:3000/graphql",
+    uri: "https://thesis-backend-production-99f6.up.railway.app/graphql",
     headers: {
       Authorization: `Bearer ${userSlice.token}`,
     },
@@ -38,7 +38,7 @@ export const DashboardNavbar = (props) => {
       setNotificationData(data.countIsRead);
     }
   }, [data]);
-  
+
   return (
     <>
       <DashboardNavbarRoot

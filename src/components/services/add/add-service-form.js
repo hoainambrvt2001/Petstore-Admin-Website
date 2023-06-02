@@ -111,7 +111,7 @@ const AddServiceForm = ({ categories }) => {
   const userSlice = useSelector((state) => state.user);
   const [createService, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_SERVICE, {
     client: new ApolloClient({
-      uri: 'http://localhost:3000/graphql',
+      uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
       cache: new InMemoryCache(),
     })
   })
@@ -132,7 +132,7 @@ const AddServiceForm = ({ categories }) => {
         variables: { serviceType: body },
 
       });
-      
+
       alert("Services created successfully");
       window.location.href = "/services";
     }

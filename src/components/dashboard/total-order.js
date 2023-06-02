@@ -5,7 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 export const TotalOrder = ({ totalOrder }) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
-      <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
+      <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textSecondary" gutterBottom variant="overline">
             TOTAL ORDER

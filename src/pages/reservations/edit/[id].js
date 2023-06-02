@@ -101,7 +101,7 @@ const Page = ({ isEdit, id }) => {
   const [staffData, setStaffData] = useState("");
   const userSlice = useSelector((state) => state.user);
   const client = new ApolloClient({
-    uri: 'http://localhost:3000/graphql',
+    uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
     cache: new InMemoryCache(),
   });
   const { loading, error, data } = useQuery(GET_RESERVATIONS, {
@@ -120,7 +120,7 @@ const Page = ({ isEdit, id }) => {
     if (data && data.serviceTypes) {
       setServiceTypeData(data.serviceTypes);
     }
-    if (data && data.staffs){
+    if (data && data.staffs) {
       setStaffData(data.staffs);
     }
   }, [data]);

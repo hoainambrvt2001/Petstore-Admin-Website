@@ -30,7 +30,7 @@ const Login = () => {
   const router = useRouter();
   const [loginMutation, { loading: mutationLoading, error: mutationError }] = useMutation(LOGIN_MUTATION, {
     client: new ApolloClient({
-      uri: 'http://localhost:3000/graphql',
+      uri: 'https://thesis-backend-production-99f6.up.railway.app/graphql',
       cache: new InMemoryCache(),
     })
   })
@@ -53,14 +53,14 @@ const Login = () => {
         const { data } = await loginMutation({
           variables: { input: inputs },
         })
-
+        console.log("Here");
         const loginInData = data.signIn;
         if (loginInData) {
           const userInfo = {
             id: loginInData.user.id,
-            username: loginInData.user.username,
             firstName: loginInData.user.firstName,
             lastName: loginInData.user.lastName,
+            role: loginInData.user.role,
             token: loginInData.accessToken,
           };
           Cookies.set("user", JSON.stringify(userInfo), { expires: loginInData.expiredIn });

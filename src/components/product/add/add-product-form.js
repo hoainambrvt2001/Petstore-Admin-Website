@@ -59,7 +59,7 @@ const AddProductForm = ({ categories }) => {
 
     setImages(event.target.files);
   }
-  const link = createUploadLink({ uri: "http://localhost:3000/graphql" })
+  const link = createUploadLink({ uri: "https://thesis-backend-production-99f6.up.railway.app/graphql" })
   const [createProduct, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_PRODUCT, {
     client: new ApolloClient({
       link,
